@@ -2,11 +2,11 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
     - repo: github.com/PyCQA/flake8
-        rev: stable
+        rev: ''
         hooks:
         - id: flake8
 
     - repo: github.com/psf/black
-        rev: stable
+        rev: ''
         hooks:
         - id: black
