@@ -1,8 +1,9 @@
 # Rule
 
-## setup
-- 깃 인코딩 UTF-8로 되어있는지 확인 필요
-- ...
+## Setting
+- pyenv pipenv 사용
+- Python 3.10.9
+- FastAPI
 
 ## Commit Convention
 
