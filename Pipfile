@@ -9,6 +9,7 @@ fastapi = "*"
 
 [dev-packages]
 pre-commit = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.10"
