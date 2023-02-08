@@ -8,7 +8,9 @@
 ## Commit Convention
 
 > Type: subject
+>
 > Body
+>
 > Footer(이슈 트랙시 사용)
 
 **Type**
@@ -30,4 +32,3 @@ main, dev를 제외한 브랜치는 큰 기능 별로 나눌 것
 
 
 ##
-
