@@ -6,9 +6,12 @@ name = "pypi"
 [packages]
 uvicorn = "*"
 fastapi = "*"
+pymongo = "*"
 
 [dev-packages]
 pre-commit = "*"
+httpx = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.10"
