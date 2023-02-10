@@ -1,5 +1,4 @@
 import uvicorn
-from database.mongodb import db
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -7,8 +6,18 @@ app = FastAPI()
 
 @app.get("/")
 def test():
-    print(db["user"].find_one())
     return {"message": "test"}
+
+
+@app.on_event("startup")
+def start():
+    # TODO
+    # DB 연결
+    # client = MongoClient(
+    #     "mongodb://admin_user:password@localhost:27017/?authMechanism=DEFAULT"
+    # )
+    # db = client["submit"]
+    pass
 
 
 if __name__ == "__main__":
