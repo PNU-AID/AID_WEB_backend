@@ -7,6 +7,7 @@ name = "pypi"
 uvicorn = "*"
 fastapi = "*"
 pymongo = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pre-commit = "*"
