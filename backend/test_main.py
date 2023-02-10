@@ -5,7 +5,7 @@ from .main import app
 client = TestClient(app)
 
 
-def test_read_main():
-    response = client.get("/")
+def test_get():
+    response = client.get("api/test/get")
     assert response.status_code == 200
     assert response.json() == {"message": "test"}

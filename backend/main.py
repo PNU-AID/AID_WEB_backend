@@ -1,12 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 
+from .api import api_router
+
 app = FastAPI()
 
-
-@app.get("/")
-def test():
-    return {"message": "test"}
+app.include_router(api_router, prefix="/api")
 
 
 @app.on_event("startup")
