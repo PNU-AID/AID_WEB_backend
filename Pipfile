@@ -8,6 +8,7 @@ uvicorn = "*"
 fastapi = "*"
 pymongo = "*"
 python-dotenv = "*"
+pydantic = {extras = ["email"], version = "*"}
 
 [dev-packages]
 pre-commit = "*"
