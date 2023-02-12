@@ -28,7 +28,9 @@ jobs:
       run: docker compose up -d
 
     - name: Run Test
-      run: pipenv run pytest
+      run: |
+        cd backend
+        pipenv run pytest
 
 # TODO
 # cache
