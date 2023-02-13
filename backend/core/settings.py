@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from pydantic import BaseSettings
 
-load_dotenv(dotenv_path=".env", verbose=True)
+load_dotenv(dotenv_path="./env/.server.env", verbose=True)
 
 
 class Settings(BaseSettings):
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     # prod, dev env 분리 할 것
 
     class Confing:
-        env_file = ".env"
+        env_file = "./env/.server.env"
         env_file_encoding = "utf-8"
 
 
