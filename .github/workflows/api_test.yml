@@ -24,12 +24,40 @@ jobs:
         pip install pipenv
         if [ -f Pipfile ]; then pipenv install --dev; fi
 
+    - id: cache-pipenv
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+
+    - name: Make .ENV
+      run: |
+        echo "mongo_user=$mongo_user" >> .env
+        echo "mongo_password=$mongo_password" >> .env
+        echo "mongo_host=$mongo_host" >> .env
+        echo "mongo_port=$mongo_port" >> .env
+
+      env:
+        mongo_user: ${{secrets.mongo_user}}
+        mongo_password: ${{secrets.mongo_password}}
+        mongo_host: ${{secrets.mongo_host}}
+        mongo_port: ${{secrets.mongo_port}}
+
+
+
+
+
+    - name: Install dependencies
+      if: steps.cache-pipenv.outputs.cache-hit != 'true'
+      run: |
+        pipenv install --dev
+
+
     - name: Run Docker Compose
       run: docker compose up -d
 
     - name: Run Test
       run: |
-        cd backend
         pipenv run pytest
 
 # TODO
