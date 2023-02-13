@@ -23,16 +23,42 @@ jobs:
         python -m pip install --upgrade pip
         pip install pipenv
         if [ -f Pipfile ]; then pipenv install --dev; fi
-        
-    - name: Test
+
+    - id: cache-pipenv
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+
+    - name: Make .ENV
       run: |
-        echo "Test"
-    
-#     - name: Test with pytest
-#       run: |
-#         pipenv run pytest
+        mkdir env
+        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./env/.db.env
+        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./env/.db.env
+
+        echo "mongo_user=$mongo_user" >> ./env/.server.env
+        echo "mongo_password=$mongo_password" >> ./env/.server.env
+        echo "mongo_host=$mongo_host" >> ./env/.server.env
+        echo "mongo_port=$mongo_port" >> ./env/.server.env
+
+      env:
+        mongo_user: ${{secrets.mongo_user}}
+        mongo_password: ${{secrets.mongo_password}}
+        mongo_host: ${{secrets.mongo_host}}
+        mongo_port: ${{secrets.mongo_port}}
+
+    - name: Install dependencies
+      if: steps.cache-pipenv.outputs.cache-hit != 'true'
+      run: |
+        pipenv install --dev
+
+    - name: Run Docker Compose
+      run: docker compose up -d
+
+    - name: Run Test
+      run: |
+        pipenv run pytest
 
 # TODO
 # cache
-# db
 # cloud
