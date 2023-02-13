@@ -32,10 +32,14 @@ jobs:
 
     - name: Make .ENV
       run: |
-        echo "mongo_user=$mongo_user" >> .env
-        echo "mongo_password=$mongo_password" >> .env
-        echo "mongo_host=$mongo_host" >> .env
-        echo "mongo_port=$mongo_port" >> .env
+        mkdir env
+        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./env/.db.env
+        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./env/.db.env
+
+        echo "mongo_user=$mongo_user" >> ./env/.server.env
+        echo "mongo_password=$mongo_password" >> ./env/./server/.env
+        echo "mongo_host=$mongo_host" >> ./env/./server/.env
+        echo "mongo_port=$mongo_port" >> ./env/./server/.env
 
       env:
         mongo_user: ${{secrets.mongo_user}}
@@ -43,15 +47,10 @@ jobs:
         mongo_host: ${{secrets.mongo_host}}
         mongo_port: ${{secrets.mongo_port}}
 
-
-
-
-
     - name: Install dependencies
       if: steps.cache-pipenv.outputs.cache-hit != 'true'
       run: |
         pipenv install --dev
-
 
     - name: Run Docker Compose
       run: docker compose up -d

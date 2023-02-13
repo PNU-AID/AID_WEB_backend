@@ -15,4 +15,4 @@ services:
       - 27017
 
     env_file:
-      - ./.env
+      - ./env/.db.env
