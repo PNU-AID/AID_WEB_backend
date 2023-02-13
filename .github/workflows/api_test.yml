@@ -37,9 +37,9 @@ jobs:
         echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./env/.db.env
 
         echo "mongo_user=$mongo_user" >> ./env/.server.env
-        echo "mongo_password=$mongo_password" >> ./env/./server/.env
-        echo "mongo_host=$mongo_host" >> ./env/./server/.env
-        echo "mongo_port=$mongo_port" >> ./env/./server/.env
+        echo "mongo_password=$mongo_password" >> ./env/.server.env
+        echo "mongo_host=$mongo_host" >> ./env/.server.env
+        echo "mongo_port=$mongo_port" >> ./env/.server.env
 
       env:
         mongo_user: ${{secrets.mongo_user}}
