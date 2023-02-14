@@ -1,19 +1,12 @@
 # To solve module not found error # noqa
-import sys
 
 from fastapi.testclient import TestClient
 
 from .main import app
 
-sys.path.append("./")
+# sys.path.append('./')
 
 client = TestClient(app)
-
-
-def test_get():
-    response = client.get("api/test/get")
-    assert response.status_code == 200
-    assert response.json() == {"message": "test"}
 
 
 def test_create_user():
@@ -24,6 +17,28 @@ def test_create_user():
 
     assert response.status_code == 201
     assert response.json() == {
+        "nick_name": "test",
+        "email": "test@email.com",
+        "is_club_member": False,
+        "admin": False,
+    }
+
+
+def test_read_user():
+    response = client.get("api/test/read", params={"nick_name": "test"})
+    assert response.status_code == 200
+    assert response.json() == {
+        "nick_name": "test",
+        "email": "test@email.com",
+        "is_club_member": False,
+        "admin": False,
+    }
+
+
+def test_read_all_user():
+    response = client.get("api/test/read/all")
+    assert response.status_code == 200
+    assert response.json()[0] == {
         "nick_name": "test",
         "email": "test@email.com",
         "is_club_member": False,

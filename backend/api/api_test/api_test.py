@@ -1,4 +1,4 @@
-from crud import create_user
+from crud import create_user, read_all_user, read_user
 from fastapi import APIRouter, Body, status
 from fastapi.responses import JSONResponse
 from scheme import UserCreate, UserOut
@@ -7,9 +7,17 @@ from utils import make_message
 router = APIRouter()
 
 
-@router.get("/get")
-def get_test():
-    return {"message": "test"}
+@router.get("/read", response_model=UserOut)
+def read_one(nick_name: str):
+    user = read_user(nick_name)
+    return user
+
+
+@router.get("/read/all", response_model=list[UserOut])
+def read_all():
+    all_user = read_all_user()
+    # cusor가 반환되므로 list로 변환이 필요
+    return list(all_user)
 
 
 @router.post("/create", response_model=UserOut, status_code=status.HTTP_201_CREATED)
