@@ -20,3 +20,10 @@ class PyObjectId(ObjectId):
 
 def make_message(message):
     return {"message": message}
+
+
+def serializeDict(item) -> dict:
+    return {
+        **{i: str(item[i]) for i in item if i == "_id"},
+        **{i: item[i] for i in item if i != "_id"},
+    }
