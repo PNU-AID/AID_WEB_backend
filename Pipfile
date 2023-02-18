@@ -9,6 +9,7 @@ fastapi = "*"
 pymongo = "*"
 python-dotenv = "*"
 pydantic = {extras = ["email"], version = "*"}
+orjson = "*"
 
 [dev-packages]
 pre-commit = "*"
