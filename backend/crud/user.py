@@ -8,6 +8,7 @@ from scheme import UserCreate
 def create_user(user: UserCreate):
     user = jsonable_encoder(user)
     # user password hashing
+    # nick_name valid check
     db.user.insert_one(user)
 
 
@@ -22,11 +23,14 @@ def read_user(user_nick_name: str):
 
 
 def update_user(user_id: str, change_info):
-    user = db.user.find_one({"_id": ObjectId(user_id)})
+    user_id = ObjectId(user_id)
+    user = db.user.find_one({"_id": user_id})
+
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
+
     change_info = jsonable_encoder(change_info)
-    result = db.user.update_one({"_id": ObjectId(user_id)}, {"$set": {**change_info}})
+    result = db.user.update_one({"_id": user_id}, {"$set": {**change_info}})
 
     # Check if the update was successful
     if result.modified_count == 0:

@@ -18,12 +18,18 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 
+class ObjectIdStr(str):
+    # https://github.com/tiangolo/fastapi/issues/452
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not isinstance(v, ObjectId):
+            raise ValueError("Not a valid ObjectId")
+        return str(v)
+
+
 def make_message(message):
     return {"message": message}
-
-
-def serializeDict(item) -> dict:
-    return {
-        **{i: str(item[i]) for i in item if i == "_id"},
-        **{i: item[i] for i in item if i != "_id"},
-    }
