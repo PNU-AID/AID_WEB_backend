@@ -19,6 +19,10 @@ class UserCreate(User):
     # 비밀번호 hasing
 
 
+class UserUpdate(User):
+    id: str = Field(..., alias="_id")
+
+
 class UserOut(User):
     id: ObjectIdStr = Field(..., alias="_id")
 

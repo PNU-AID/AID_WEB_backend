@@ -1,7 +1,13 @@
-from crud import create_user, read_all_user, read_user, update_user
+from crud import (
+    create_user,
+    delete_user,
+    read_all_user,
+    read_user,
+    update_user,
+)
 from fastapi import APIRouter, Body, status
-from fastapi.responses import JSONResponse
-from scheme import UserCreate, UserOut
+from fastapi.responses import JSONResponse, ORJSONResponse
+from scheme import UserCreate, UserOut, UserUpdate
 from utils import make_message
 
 router = APIRouter()
@@ -33,19 +39,17 @@ def create(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content=make_message("서버 에러"),
         )
-    return JSONResponse(
-        content=make_message("Sing Up Successful"), status_code=status.HTTP_201_CREATED
-    )
+    return JSONResponse(content=make_message("Sing Up Successful"), status_code=status.HTTP_201_CREATED)
 
 
-@router.get("/read", response_model=UserOut)
+@router.get("/read", response_model=UserOut, status_code=status.HTTP_200_OK)
 def read_one(nick_name: str):
     """nick_name에 해당하는 유저 정보 반환"""
     user = read_user(nick_name)
     return user
 
 
-@router.get("/read/all", response_model=list[UserOut])
+@router.get("/read/all", response_model=list[UserOut], status_code=status.HTTP_200_OK)
 def read_all():
     """모든 유저 정보 반환"""
     all_user = read_all_user()
@@ -54,21 +58,14 @@ def read_all():
 
 
 @router.put("/update")
-def update(
-    user_id: str,
-    change_info: UserCreate = Body(
-        example={
-            "nick_name": "닉네임",
-            "password": "패스워드",
-            "email": "테스트이메일@email.com",
-        }
-    ),
-):
-    update_user(user_id, change_info)
+def update(user_info: UserUpdate):
+    update_user(user_info)
+    return ORJSONResponse(content=make_message("수정 완료"), status_code=status.HTTP_200_OK)
 
 
 @router.delete("/delete")
 def delete(
     user_id: str,
 ):
-    pass
+    delete_user(user_id)
+    return ORJSONResponse(content=make_message("삭제 완료"), status_code=status.HTTP_200_OK)
