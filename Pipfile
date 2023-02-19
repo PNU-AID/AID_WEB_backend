@@ -10,6 +10,7 @@ pymongo = "*"
 python-dotenv = "*"
 pydantic = {extras = ["email"], version = "*"}
 orjson = "*"
+pytest-order = "*"
 
 [dev-packages]
 pre-commit = "*"
