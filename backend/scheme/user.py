@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, Field
+from utils import ObjectIdStr
 
 
 class User(BaseModel):
@@ -18,5 +19,16 @@ class UserCreate(User):
     # 비밀번호 hasing
 
 
+class UserUpdate(User):
+    id: str = Field(..., alias="_id")
+
+
 class UserOut(User):
-    pass
+    id: ObjectIdStr = Field(..., alias="_id")
+
+
+def serializeDict(item) -> dict:
+    return {
+        **{"id": str(item[i]) for i in item if i == "_id"},
+        **{i: item[i] for i in item if i != "_id"},
+    }
