@@ -11,6 +11,7 @@ python-dotenv = "*"
 pydantic = {extras = ["email"], version = "*"}
 orjson = "*"
 pytest-order = "*"
+python-multipart = "*"
 
 [dev-packages]
 pre-commit = "*"
