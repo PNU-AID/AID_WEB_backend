@@ -12,6 +12,7 @@ pydantic = {extras = ["email"], version = "*"}
 orjson = "*"
 pytest-order = "*"
 python-multipart = "*"
+jinja2 = "*"
 
 [dev-packages]
 pre-commit = "*"
