@@ -46,5 +46,6 @@ env/.server.env
     MONGO_INITDB_ROOT_PASSWORD=password
 
 docker compose up -d
-pytest
+sh run_server.sh
+
 ```
