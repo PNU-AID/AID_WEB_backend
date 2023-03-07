@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, Field
-from utils import ObjectIdStr
+
+from backend.utils import ObjectIdStr
 
 
 class User(BaseModel):

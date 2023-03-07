@@ -1,14 +1,15 @@
-from crud import (
+from fastapi import APIRouter, Body, status
+from fastapi.responses import JSONResponse, ORJSONResponse
+
+from backend.crud import (
     create_user,
     delete_user,
     read_all_user,
     read_user,
     update_user,
 )
-from fastapi import APIRouter, Body, status
-from fastapi.responses import JSONResponse, ORJSONResponse
-from scheme import UserCreate, UserOut, UserUpdate
-from utils import make_message
+from backend.scheme import UserCreate, UserOut, UserUpdate
+from backend.utils import make_message
 
 router = APIRouter()
 

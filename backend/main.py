@@ -1,8 +1,9 @@
 import uvicorn
-from api import api_router
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+
+from .api import api_router
 
 app = FastAPI()
 

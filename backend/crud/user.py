@@ -1,8 +1,9 @@
 from bson import ObjectId
-from database import db
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
-from scheme import UserCreate
+
+from backend.database import db
+from backend.scheme import UserCreate
 
 
 def create_user(user: UserCreate):
