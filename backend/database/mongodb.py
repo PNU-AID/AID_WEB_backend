@@ -9,3 +9,4 @@ client = MongoClient(
     f"{settings.mongo_port}/?authMechanism=DEFAULT"
 )
 db = client["AID_test"]
+# db = client["AID"]
