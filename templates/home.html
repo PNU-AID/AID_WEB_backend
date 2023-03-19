@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Home Page</title>
+{% endblock head %}
+
+
+{% block content %}
+{% include 'nav.html' %}
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div class="d-flex flex-column justify-content-center align-items-center shadow p-3 mb-5 bg-body-tertiary rounded" style="height: 30vh; width: 30vw">
+        <div class="d-flex fs-2">
+            <p class="fw-bold">AID</p>eveloper
+        </div>
+        <div>
+            <a class="btn btn-primary" href="/submit" role="button">지원하기</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
