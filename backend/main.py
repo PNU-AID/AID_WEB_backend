@@ -20,8 +20,13 @@ def start():
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(request: Request):
+def home_page(request: Request):
     return template.TemplateResponse("home.html", context={"request": request})
+
+
+@app.get("/submit", response_class=HTMLResponse)
+def submit_page(request: Request):
+    return template.TemplateResponse("submit.html", context={"request": request})
 
 
 if __name__ == "__main__":
