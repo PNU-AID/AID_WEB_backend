@@ -5,6 +5,9 @@ load_dotenv(dotenv_path="./env/.server.env", verbose=True)
 
 
 class Settings(BaseSettings):
+    PROJECT_NAME: str = "AID_WEB"
+    PROJECT_VERSION: str = "0.1.0"
+
     mongo_user: str
     mongo_password: str
     mongo_host: str
