@@ -11,22 +11,17 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
-app.include_router(api_router, prefix="/api")
+app.include_router(api_router, prefix="")
+
+
+@app.get("/", response_class=HTMLResponse)
+def home_page(request: Request, msg: str = None):
+    return template.TemplateResponse("home.html", context={"request": request, "msg": msg})
 
 
 @app.on_event("startup")
 def start():
     pass
-
-
-@app.get("/", response_class=HTMLResponse)
-def home_page(request: Request):
-    return template.TemplateResponse("home.html", context={"request": request})
-
-
-@app.get("/submit", response_class=HTMLResponse)
-def submit_page(request: Request):
-    return template.TemplateResponse("submit.html", context={"request": request})
 
 
 if __name__ == "__main__":
