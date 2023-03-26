@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, responses, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from backend.crud import create_submit
 from backend.scheme.submit import SubmitForm
 
 router = APIRouter()
@@ -20,8 +21,7 @@ async def submit(request: Request):
     await form.load_data()
 
     if form.is_valid():
-        # TODO
-        # DB 저장
+        create_submit(form.send_data())
         return responses.RedirectResponse("/?msg=success", status_code=status.HTTP_302_FOUND)
 
     return template.TemplateResponse("submit.html", context=form.__dict__)

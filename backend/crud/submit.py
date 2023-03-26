@@ -1,7 +1,6 @@
 def create_submit(data):
-    # TODO
-    # data decoding
-    # DB에 저장
+    # db['submit'].insert_one(data)
+    print(type(data))
     print(data)
 
 

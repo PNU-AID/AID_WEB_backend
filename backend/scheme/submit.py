@@ -24,6 +24,13 @@ class SubmitForm:
         for k, v in form.items():
             setattr(self, k, v)
 
+    def send_data(self):
+        send_list = {}
+        for k, v in self.__dict__.items():
+            if k != "request":
+                send_list[k] = v
+        return send_list
+
     def is_valid(self):
         if self.username == "":
             return False
