@@ -58,7 +58,3 @@ jobs:
     - name: Run Test
       run: |
         pipenv run pytest
-
-# TODO
-# cache
-# cloud

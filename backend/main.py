@@ -1,13 +1,25 @@
 import uvicorn
-from api import api_router
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
+from .api import api_router
 
 app = FastAPI()
 
-app.include_router(api_router, prefix="/api")
+app.mount("/static", StaticFiles(directory="templates"), name="static")
+template = Jinja2Templates(directory="templates")  # terminal 기준 path
+
+app.include_router(api_router, prefix="")#여기서 api_router는 ./api/endpoint/api.py에 있는 api_router변수로, submit, auth api가 include돼있다.
 
 
-@app.on_event("startup")
+@app.get("/", response_class=HTMLResponse)
+def home_page(request: Request, msg: str = None):
+    return template.TemplateResponse("home.html", context={"request": request, "msg": msg})
+
+
+@app.on_event("startup") #서버 실행시
 def start():
     pass
 

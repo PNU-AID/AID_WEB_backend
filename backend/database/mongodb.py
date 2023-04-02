@@ -1,5 +1,6 @@
-from core import settings
 from pymongo import MongoClient
+
+from backend.core import settings
 
 client = MongoClient(
     f"mongodb://{settings.mongo_user}:"
@@ -8,3 +9,4 @@ client = MongoClient(
     f"{settings.mongo_port}/?authMechanism=DEFAULT"
 )
 db = client["AID_test"]
+# db = client["AID"]

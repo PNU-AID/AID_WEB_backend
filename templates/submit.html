@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Submit Page</title>
+{% endblock head %}
+
+{% block content %}
+{% include 'nav.html' %}
+<div class="d-flex flex-column">
+    <form method="post" action="/submit">
+        <div class="form-group p-2">
+            <label for="exampleFormControlInput1">이름</label>
+            <input type="text" class="form-control" name="username" value="{{username}}" id="exampleFormControlInput1" placeholder="홍길동">
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlInput1">이메일</label>
+            <input type="email" class="form-control" name="email" value="{{email}}" id="exampleFormControlInput1" placeholder="test@naver.com">
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlInput1">학번(8자리)</label>
+            <input type="text" class="form-control" name="student_id" value="{{student_id}}" id="exampleFormControlInput1" placeholder="202012345">
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlSelect1">Python Skill</label>
+            <select class="form-control" name="python_skill" value="{{python_skill}}" id="exampleFormControlSelect1">
+            <option>상(파이썬 작동원리를 이해하고, 구체적인 프로젝트 경험이 있음)</option>
+            <option>중(공식 reference 를 참고해 프로그램 제작이 가능)</option>
+            <option>하(파이썬 코드를 보고 대략적인 흐름 이해 가능)</option>
+            </select>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">동아리 지원 계기(공백 포함 500자 이내)</label>
+            <textarea class="form-control" name="motivation" value="{{motivation}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">AI 관련 수강 과목(학교 수업이 아니어도 기재해주세요)</label>
+            <textarea class="form-control" name="ai_subject" value="{{ai_subject}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">본인이 하고 싶은 스터디</label>
+            <textarea class="form-control" name="study_want" value="{{study_want}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">본인이 해보고 싶은 프로젝트</label>
+            <textarea class="form-control" name="project_want" value="{{project_want}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">본인의 진로</label>
+            <textarea class="form-control" name="course" value="{{course}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlTextarea1">프로젝트 경험</label>
+            <textarea class="form-control" name="project_exp" value="{{proejct_exp}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlInput1">Github 주소</label>
+            <input type="text" class="form-control" name="github" value="{{github}}" id="exampleFormControlInput1" placeholder="">
+        </div>
+        <div class="form-group p-2">
+            <label for="exampleFormControlInput1">Blog 주소(Tech Blog)</label>
+            <input type="text" class="form-control" name="blog" value="{{blog}}" id="exampleFormControlInput1" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-primary">제출하기</button>
+    </form>
+</div>
+{% endblock content %}
