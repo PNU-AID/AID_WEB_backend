@@ -35,6 +35,7 @@ class SubmitForm:
         return send_list
 
     def is_valid(self):
+        # TODO
         if self.username == "":
             return False
         return True
