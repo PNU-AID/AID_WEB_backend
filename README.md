@@ -35,17 +35,16 @@ main, dev를 제외한 브랜치는 큰 기능 별로 나눌 것
 
 ```sh
 # 파일 생성
-env/.db.env
+env/.server.env
     mongo_user=admin_user
     mongo_password=password
     mongo_host=localhost
     mongo_port=27017
 
-env/.server.env
+env/.db.env
     MONGO_INITDB_ROOT_USERNAME=admin_user
     MONGO_INITDB_ROOT_PASSWORD=password
 
 docker compose up -d
 sh run_server.sh
-
 ```
