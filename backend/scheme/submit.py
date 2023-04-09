@@ -1,3 +1,5 @@
+import re
+
 from fastapi import Request
 
 # fastapi.Request 클래스를 사용하여 HTTP 요청에서 전달받은 "폼 데이터"를 처리하는 SubmitForm 클래스를 정의하는 코드다.
@@ -38,4 +40,12 @@ class SubmitForm:  # SubmitForm 클래스는 Request 객체를 생성자로 전�
         # SubmitForm 클래스의 username 속성이 "빈 문자열"인 경우 "False"를 반환하고, 그렇지 않은 경우 "True"를 반환한다.
         if self.username == "":
             return False
+
+        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        if not re.match(email_pattern, self.email):  # 정규식을 사용하여 이메일 폼 확인
+            return False
+
+        if len(self.student_id) != 9:
+            return False
+
         return True
