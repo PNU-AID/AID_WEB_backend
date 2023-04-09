@@ -9,8 +9,10 @@ def create_submit(data):  # submit을 생성(submit form을 생성?), api\endpoi
 
 
 def read_all_submit(data):  # submit을 모두 읽음
-    pass
+    all_submits = db.submit.find()
+    return all_submits
 
 
 def read_submit(data):  # submit을 하나 읽어옴
-    pass
+    submits = db.submit.find_one({"id": id})
+    return submits
