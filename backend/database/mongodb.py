@@ -1,12 +1,7 @@
-import sys
-
-from core import settings
-
 # Python에서 MongoDB 데이터베이스에 연결하기 위해 PyMongo 모듈을 사용하는 예제
 from pymongo import MongoClient
 
-sys.path.append("/Users/jeongjimin/Documents/동아리/AID/Web/AID_WEB")
-# sys.path.append('../')  # 'core' 모듈이 위치한 상위 디렉토리를 파이썬 패스에 추가
+from backend.core import settings
 
 # PyMongo 모듈의 MongoClient 클래스를 사용하여 MongoDB 서버에 연결
 # MongoClient: MongoDB 서버에 연결하기 위한 인증 정보와 호스트 및 포트 정보를 인자로 받는다.
