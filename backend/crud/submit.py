@@ -6,8 +6,7 @@ def create_submit(data: dict):
 
 
 def read_all_submit():
-    # TODO
-    pass
+    return db.submit.find()
 
 
 def read_submit(_id: str):

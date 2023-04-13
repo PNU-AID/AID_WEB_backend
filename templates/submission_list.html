@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Submission list</title>
+{% endblock head %}
+
+{% block content %}
+{% include 'nav.html' %}
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+    <div>번호 | 생성 시간 | 이름 | 내용 요약</div>
+    {% for submit in submission %}
+    <div class="d-flex">
+        <div>{{loop.index}}</div>
+        <div>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</div>
+        <div>{{submit.username}}</div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

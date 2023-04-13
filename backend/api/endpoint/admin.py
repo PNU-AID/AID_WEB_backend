@@ -2,15 +2,28 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from backend.crud.submit import read_all_submit
+
 router = APIRouter()
 
 template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
 
 @router.get("", response_class=HTMLResponse)
-def admin_page(request: Request):
+def submission_list_page(request: Request):
     """admin 페이지 반환"""
 
+    all_data = read_all_submit()
     # TODO
-    # 모든 내용 가져오기
-    return template.TemplateResponse("admin.html", context={"request": request})
+
+    return template.TemplateResponse("submission_list.html", context={"request": request, "submission": all_data})
+
+
+@router.get("/detail", response_class=HTMLResponse)
+def submission_detail_page(request: Request):
+    return template.TemplateResponse(
+        "submission_list.html",
+        context={
+            "request": request,
+        },
+    )

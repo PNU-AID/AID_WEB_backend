@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import Request
 
 
@@ -20,6 +22,7 @@ class SubmitForm:
 
     def __init__(self, request: Request):
         self.request = request
+        self.created_time = datetime.now()
         self.errors = []
 
     async def load_data(self):
