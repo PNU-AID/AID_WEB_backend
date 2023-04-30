@@ -5,19 +5,22 @@ from fastapi import Request
 # fastapi.Request 클래스를 사용하여 HTTP 요청에서 전달받은 "폼 데이터"를 처리하는 SubmitForm 클래스를 정의하는 코드다.
 
 
-class SubmitForm:  # SubmitForm 클래스는 Request 객체를 생성자로 전달받으며,
-    # username: str
-    # email: EmailStr
-    # student_id: str
-    # python_skill: str
-    # motivation: str
-    # github: Optional[str]
-    # blog: Optional[str]
-    # ai_subject: Optional[str]
-    # study_want: Optional[str]
-    # project_want: Optional[str]
-    # course: Optional[str]
-    # project_exp: Optional[str]
+class SubmitForm:
+    """
+    load_data()를 통해 아래 변수를 생성
+    username: str
+    email: EmailStr
+    student_id: str
+    python_skill: str
+    motivation: str
+    github: Optional[str]
+    blog: Optional[str]
+    ai_subject: Optional[str]
+    study_want: Optional[str]
+    project_want: Optional[str]
+    course: Optional[str]
+    project_exp: Optional[str]
+    """
 
     def __init__(self, request: Request):  # SubmitForm 클래스의 생성자
         # Request 객체를 이용해서 폼 데이터를 받아온다.
@@ -29,10 +32,10 @@ class SubmitForm:  # SubmitForm 클래스는 Request 객체를 생성자로 전�
         for k, v in form.items():
             setattr(self, k, v)
 
-    def send_data(self):  # send_data 메서드를 사용하여 로드한 데이터를 딕셔너리 형태로 반환한다.
+    def send_data(self) -> dict:
         send_list = {}
         for k, v in self.__dict__.items():
-            if k != "request":
+            if not (k == "request" or k == "errors"):
                 send_list[k] = v
         return send_list
 
