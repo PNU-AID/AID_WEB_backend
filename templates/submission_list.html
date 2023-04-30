@@ -15,6 +15,7 @@
               <th scope="col">제출 시간</th>
               <th scope="col">이름</th>
               <th scope="col">내용 요약</th>
+              <th scope="col">detail</th>
             </tr>
         </thead>
         <tbody>
@@ -24,11 +25,11 @@
                 <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
                 <th>{{submit.motivation[:10]}}...</th>
+                <th><a href="/admin/detail?submit_id={{submit._id}}">링크</a></th>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
 </div>
 
 

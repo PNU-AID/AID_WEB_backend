@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from backend.database import db
 
 
@@ -6,9 +8,8 @@ def create_submit(data: dict):
 
 
 def read_all_submit():
-    return db.submit.find()
+    return db["submit"].find()
 
 
 def read_submit(_id: str):
-    # TODO
-    pass
+    return db["submit"].find_one({"_id": ObjectId(_id)})
