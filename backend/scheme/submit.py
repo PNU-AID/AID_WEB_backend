@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from fastapi import Request
 
@@ -22,10 +23,10 @@ class SubmitForm:
     project_exp: Optional[str]
     """
 
-    def __init__(self, request: Request):  # SubmitForm 클래스의 생성자
-        # Request 객체를 이용해서 폼 데이터를 받아온다.
-        self.request = request  # Request 객체를 인자로 받아서 self.request 속성에 저장하고, self.errors 속성을 빈 리스트로 초기화한다.
-        self.errors = []  # self.errors 속성은 폼 데이터를 처리하면서 "발생한 오류"를 저장하는 데 사용될 수 있다.
+    def __init__(self, request: Request):
+        self.request = request
+        self.created_time = datetime.now()
+        self.errors = []
 
     async def load_data(self):  # load_data 메서드를 사용하여 전달받은 폼 데이터를 로드하고,
         form = await self.request.form()
@@ -39,8 +40,8 @@ class SubmitForm:
                 send_list[k] = v
         return send_list
 
-    def is_valid(self):  # is_valid 메서드는 데이터의 유효성을 검사하는 로직이 구현되어 있다.
-        # SubmitForm 클래스의 username 속성이 "빈 문자열"인 경우 "False"를 반환하고, 그렇지 않은 경우 "True"를 반환한다.
+    def is_valid(self):
+        # TODO
         if self.username == "":
             return False
 
