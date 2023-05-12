@@ -33,10 +33,15 @@ jobs:
     - name: Make .ENV
 
       env:
-        mongo_user: ${{secrets.mongo_user}}
-        mongo_password: ${{secrets.mongo_password}}
-        mongo_host: ${{secrets.mongo_host}}
-        mongo_port: ${{secrets.mongo_port}}
+        # mongo_user: ${{secrets.mongo_user}}
+        # mongo_password: ${{secrets.mongo_password}}
+        # mongo_host: ${{secrets.mongo_host}}
+        # mongo_port: ${{secrets.mongo_port}}
+
+        mongo_user: admin_user
+        mongo_password: password
+        mongo_host: localhost
+        mongo_port: 27017
 
       run: |
         mkdir env
