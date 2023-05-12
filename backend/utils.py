@@ -1,5 +1,9 @@
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
+import random
+
 from bson import ObjectId
+
+from backend.database import db
 
 # PyObjectId 클래스:
 # MongoDB의 ObjectId를 Python에서 사용하기 쉽도록 Wrapping하여 FastAPI에서 쉽게 사용할 수 있도록 한다.
@@ -64,3 +68,30 @@ class StrObjectId(str):
 # make_message 함수: 문자열 메시지를 인자로 받아서 딕셔너리 형태로 변환하여 반환한다. 이 함수는 테스트 용도로 사용될 수 있다.
 def make_message(message):
     return {"message": message}
+
+
+def make_dummy_submit():
+    dummies = []
+    for i in range(100):
+        tmp = {}
+        email_tail = ["naver.com", "pusan.co.kr", "gmail.com"]
+        p_skill = ["상", "중", "하"]
+        tmp["username"] = f"test_name{random.randint(1, 1000)}"
+        tmp["email"] = f"test{random.randint(1, 1000)}@{random.choice(email_tail)}"
+        tmp["student_id"] = f"{int(random.random()*1e9)}"
+        tmp["python_skill"] = f"{random.choice(p_skill)}"
+        tmp["motivation"] = "내용"
+        tmp["github"] = f"test{random.randint(1, 1000)}@github.com"
+        tmp["blog"] = f"test{random.randint(1, 1000)}@블로그주소"
+        tmp["ai_subject"] = "없음"
+        tmp["study_want"] = "없음"
+        tmp["project_want"] = "없음"
+        tmp["course"] = "없음"
+        tmp["project_exp"] = "없음"
+        dummies.append(tmp)
+    db["submit"].insert_many(dummies)
+
+
+def delete_dummy_submit():
+    query = {"project_exp": "없음"}
+    db["submit"].delete_many(query)
