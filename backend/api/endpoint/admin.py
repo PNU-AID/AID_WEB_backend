@@ -10,13 +10,16 @@ template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
 
 @router.get("", response_class=HTMLResponse)
-def submission_list_page(request: Request):
+def submission_list_page(request: Request, submit_page: int = 1):
     """admin 페이지 반환"""
 
     all_data = read_all_submit()
     # TODO
+    limit = 3
+    offset = (submit_page - 1) * limit
+    selected = all_data.limit(limit).skip(offset)
 
-    return template.TemplateResponse("submission_list.html", context={"request": request, "submission": all_data})
+    return template.TemplateResponse("submission_list.html", context={"request": request, "submission": selected})
 
 
 @router.get("/detail", response_class=HTMLResponse)
