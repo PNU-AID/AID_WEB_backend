@@ -9,7 +9,6 @@ def create_submit(data: dict):
 
 def read_all_submit():
     return db["submit"].find()
-    #hello
 
 
 def read_submit(_id: str):
