@@ -13,7 +13,8 @@ orjson = "*"
 pytest-order = "*"
 python-multipart = "*"
 jinja2 = "*"
-passlib = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 pre-commit = "*"
