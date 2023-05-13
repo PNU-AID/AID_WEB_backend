@@ -13,6 +13,7 @@ orjson = "*"
 pytest-order = "*"
 python-multipart = "*"
 jinja2 = "*"
+passlib = "*"
 
 [dev-packages]
 pre-commit = "*"
