@@ -1,4 +1,3 @@
-import jwt
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -42,18 +41,3 @@ def submission_detail_page(request: Request, submit_id: str):
         "submission_detail.html",
         context={"request": request, "submit_info": submit_info},
     )
-
-
-# --------------------------------------------------------------------------------------------------
-def decode_token(token):
-    try:
-        decoded_token = jwt.decode(token, "secret_key", algorithms=["HS256"])
-        return decoded_token
-    except jwt.exceptions.DecodeError:
-        # 토큰 디코딩 실패
-        return None
-
-
-async def get_id(token: str):
-    ID = decode_token(token)
-    return ID
