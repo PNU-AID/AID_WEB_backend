@@ -1,5 +1,6 @@
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
 import random
+from datetime import datetime
 
 from bson import ObjectId
 
@@ -77,6 +78,7 @@ def make_dummy_submit():
         email_tail = ["naver.com", "pusan.co.kr", "gmail.com"]
         p_skill = ["상", "중", "하"]
         tmp["username"] = f"test_name{random.randint(1, 1000)}"
+        tmp["created_time"] = datetime.now()
         tmp["email"] = f"test{random.randint(1, 1000)}@{random.choice(email_tail)}"
         tmp["student_id"] = f"{int(random.random()*1e9)}"
         tmp["python_skill"] = f"{random.choice(p_skill)}"
