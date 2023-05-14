@@ -21,7 +21,7 @@
             {% for submit in submission %}
             <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
                 <th>{{loop.index}}</th>
-
+                <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
                 <th>{{submit.motivation[:10]}}...</th>
             </tr>
