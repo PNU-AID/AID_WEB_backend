@@ -34,9 +34,10 @@
     <div role = "navigation">
         <table>
             <tbody>
+
                 {% for x in range(values) %}
                 <td>
-                    <a class = "p1" href = "/admin/?submit_page=x" >1</a>
+                    <a class = "p1" href = "/admin/?submit_page={{x+1}}" >{{x+1}}</a>
                 </td>
                 {% endfor %}
             </tbody>
