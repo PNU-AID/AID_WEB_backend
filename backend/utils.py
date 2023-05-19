@@ -97,3 +97,11 @@ def make_dummy_submit():
 def delete_dummy_submit():
     query = {"project_exp": "없음"}
     db["submit"].delete_many(query)
+
+
+def make_super_user():
+    db["user"].insert_one({"username": "admin", "password": "qwer1234"})
+
+
+def delete_super_user():
+    db["user"].delete_one({"username": "admin"})
