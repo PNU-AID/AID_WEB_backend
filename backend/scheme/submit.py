@@ -23,6 +23,9 @@ class SubmitForm:
     project_exp: Optional[str]
     """
 
+    # TODO
+    # 합격 불합격 체크리스트 boolean, default False
+
     def __init__(self, request: Request):
         self.request = request
         self.created_time = datetime.now()

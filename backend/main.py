@@ -5,7 +5,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from .api import api_router
-from .utils import delete_dummy_submit, make_dummy_submit
+from .utils import (
+    delete_dummy_submit,
+    delete_super_user,
+    make_dummy_submit,
+    make_super_user,
+)
 
 app = FastAPI()
 
@@ -27,11 +32,13 @@ def home_page(request: Request, msg: str = None):
 @app.on_event("startup")  # 서버 실행시
 def start():
     make_dummy_submit()
+    make_super_user()
 
 
 @app.on_event("shutdown")
 def finish():
     delete_dummy_submit()
+    delete_super_user()
 
 
 if __name__ == "__main__":
