@@ -19,11 +19,12 @@
         </thead>
         <tbody>
             {% for submit in submission %}
-            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
+            <tr>
                 <th>{{loop.index}}</th>
                 <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
                 <th>{{submit.motivation[:10]}}...</th>
+                <th><a href="/admin/detail?submit_id={{submit._id}}">링크</a></th>
             </tr>
             {% endfor %}
         </tbody>
@@ -33,7 +34,7 @@
         <table>
             <tbody>
 
-                {% for x in range(values) %}
+                {% for x = 1 in range(values) %}
                 <td>
                     <a class = "p1" href = "/admin/?submit_page={{x+1}}" >{{x+1}}</a>
                 </td>
