@@ -36,3 +36,9 @@ def submission_detail_page(request: Request, submit_id: str):
 
 
 # TODO 합격 불합격 체크리스트 api만들기
+@router.post("/change_status")
+async def change_status(request: Request, submit_id: str):
+    test_val = await request.form()
+    print(test_val)
+
+    return {"message": "test"}

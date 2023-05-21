@@ -23,12 +23,10 @@ class SubmitForm:
     project_exp: Optional[str]
     """
 
-    # TODO
-    # 합격 불합격 체크리스트 boolean, default False
-
     def __init__(self, request: Request):
         self.request = request
         self.created_time = datetime.now()
+        self.is_pass = False
         self.errors = []
 
     async def load_data(self):  # load_data 메서드를 사용하여 전달받은 폼 데이터를 로드하고,
