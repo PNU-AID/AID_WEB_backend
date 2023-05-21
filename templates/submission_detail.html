@@ -8,17 +8,20 @@
 {% include 'nav.html' %}
 
 <div class="d-flex flex-column">
-    <form action="/admin/change_status" method="POST">
-        <div>
-            <label for="pass">합격</label>
-            <input type="radio" id="pass" value="pass" name="is_pass" {% if submit_info.is_pass == True %} checked=true {% endif %}/>
-        </div>
-        <div>
-            <label for="fail">불합격</label>
-            <input type="radio" id="fail" value="fail" name="is_pass" {% if submit_info.is_pass == False %} checked=true {% endif %}/>
-        </div>
-        <button type="submit">수정</button>
-    </form>
+    <div>
+        <form action="/admin/change_status", method="post">
+            <div>
+                <label for="pass">합격</label>
+                <input type="radio" id="pass" name="is_pass" {% if submit_info.is_pass %} checked=true {% endif %} value="pass"/>
+            </div>
+            <div>
+                <label for="fail">불합격</label>
+                <input type="radio" id="fail" name="is_pass" {% if not submit_info.is_pass %} checked=true {% endif %} value="fail"/>
+            </div>
+            <input type="hidden" name="submit_id" value="{{submit_info._id}}">
+            <button type="submit">수정</buttom>
+        </form>
+    </div>
 
     <div>
         <div>이름</div>

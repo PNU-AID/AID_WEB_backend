@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Form, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from backend.crud.submit import read_all_submit, read_submit
+from backend.crud.submit import (
+    read_all_submit,
+    read_submit,
+    update_is_pass,
+)
 from backend.database import db
 
 router = APIRouter()
@@ -35,10 +39,11 @@ def submission_detail_page(request: Request, submit_id: str):
     )
 
 
-# TODO 합격 불합격 체크리스트 api만들기
 @router.post("/change_status")
-async def change_status(request: Request, submit_id: str):
-    test_val = await request.form()
-    print(test_val)
-
-    return {"message": "test"}
+async def change_pass_status(request: Request):
+    data = await request.form()
+    is_pass = True if data["is_pass"] == "pass" else False
+    submit_id = data["submit_id"]
+    update_is_pass(submit_id, is_pass)
+    redirect_url = f"/admin/detail?submit_id={submit_id}"
+    return RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)
