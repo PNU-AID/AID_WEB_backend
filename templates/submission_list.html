@@ -2,33 +2,42 @@
 
 {% block head %}
 <title>Submission list</title>
+
 {% endblock head %}
 
 {% block content %}
 {% include 'nav.html' %}
 
-<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
-    <table class="table">
-        <thead>
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">제출 시간</th>
-              <th scope="col">이름</th>
-              <th scope="col">내용 요약</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for submit in submission %}
-            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
-                <th>{{loop.index}}</th>
-                <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
-                <th>{{submit.username}}</th>
-                <th>{{submit.motivation[:10]}}...</th>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
 
+<main>
+    <section>
+
+    </section>
+
+    <section>
+    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제출 시간</th>
+                <th scope="col">이름</th>
+                <th scope="col">내용 요약</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submit in submission %}
+                <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
+                    <th>{{loop.index}}</th>
+                    <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
+                    <th>{{submit.username}}</th>
+                    <th>{{submit.motivation[:10]}}...</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+</main>
 
 {% endblock content %}
