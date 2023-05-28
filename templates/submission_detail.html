@@ -8,7 +8,21 @@
 {% include 'nav.html' %}
 
 <div class="d-flex flex-column">
-    {# TODO: 합격 불합격 체크할 박스 추가 #}
+    <div>
+        <form action="/admin/change_status", method="post">
+            <div>
+                <label for="pass">합격</label>
+                <input type="radio" id="pass" name="is_pass" {% if submit_info.is_pass %} checked=true {% endif %} value="pass"/>
+            </div>
+            <div>
+                <label for="fail">불합격</label>
+                <input type="radio" id="fail" name="is_pass" {% if not submit_info.is_pass %} checked=true {% endif %} value="fail"/>
+            </div>
+            <input type="hidden" name="submit_id" value="{{submit_info._id}}">
+            <button type="submit">수정</buttom>
+        </form>
+    </div>
+
     <div>
         <div>이름</div>
         <div>{{submit_info.username}}</div>
