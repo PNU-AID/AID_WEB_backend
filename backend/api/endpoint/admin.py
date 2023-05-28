@@ -31,14 +31,16 @@ def submission_list_page(request: Request, submit_page: int = 1):
     """admin 페이지 반환"""
 
     all_data = read_all_submit()
-    all_data_cnt = get_count()
+    get_count()
     # TODO
-    limit = 3
-    offset = (submit_page - 1) * limit
-    selected = all_data.limit(limit).skip(offset)
+    # limit = 3
+    # offset = (submit_page - 1) * limit
+
+    selected = all_data.limit(10).skip(0)
+    print(len(selected))
 
     return template.TemplateResponse(
-        "submission_list.html", context={"request": request, "submission": selected, "values": all_data_cnt}
+        "submission_list.html", context={"request": request, "submission": selected, "values": 3}
     )
 
 
