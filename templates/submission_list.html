@@ -20,7 +20,7 @@
         <tbody>
             {% for submit in submission %}
             <tr>
-                <th>{{loop.index}}</th>
+                <th>{{loop.index + (cur_page-1) * 10}}</th>
                 <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
                 <th>{{submit.motivation[:10]}}...</th>
@@ -34,9 +34,9 @@
 <div role = "navigation">
     <table>
         <tbody>
-            {% for x in value %}
+            {% for x in range(first_idx, last_idx+1) %}
             <td>
-                <a class = "p1" href = "/admin/?submit_page={{x+1}}" >{{x+1}}</a>
+                <a class = "p1" href = "/admin/?submit_page={{x}}" >{{x}}</a>
             </td>
             {% endfor %}
         </tbody>
