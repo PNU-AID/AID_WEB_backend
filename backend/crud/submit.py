@@ -11,6 +11,10 @@ def read_all_submit():
     return db["submit"].find()
 
 
+def get_count():
+    return db["submit"].count_documents({})
+
+
 def read_submit(_id: str):
     return db["submit"].find_one({"_id": ObjectId(_id)})
 
