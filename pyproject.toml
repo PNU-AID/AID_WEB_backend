@@ -1,5 +1,13 @@
 [tool.pytest.ini_options]
 pythonpath = [
-    "./backend",
+    "./app/backend",
+    "./app",
     "."
+]
+
+env = [
+    "mongo_user=admin_user",
+    "mongo_password=password",
+    "mongo_host=localhost",
+    "mongo_port=27017"
 ]
