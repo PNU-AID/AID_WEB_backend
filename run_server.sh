@@ -1,2 +1,2 @@
 # pipenv run python ./backend/main.py
-pipenv run uvicorn backend.main:app --reload
+cd app/ && pipenv run uvicorn backend.main:app --reload
