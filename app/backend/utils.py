@@ -2,9 +2,8 @@
 import random
 from datetime import datetime
 
-from bson import ObjectId
-
 from backend.database import db
+from bson import ObjectId
 
 # PyObjectId 클래스:
 # MongoDB의 ObjectId를 Python에서 사용하기 쉽도록 Wrapping하여 FastAPI에서 쉽게 사용할 수 있도록 한다.

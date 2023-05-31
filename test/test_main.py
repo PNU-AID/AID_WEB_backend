@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from backend.main import app
+from app.backend.main import app
 
 
 def test_hompage():

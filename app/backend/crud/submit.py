@@ -1,6 +1,5 @@
-from bson import ObjectId
-
 from backend.database import db
+from bson import ObjectId
 
 
 def create_submit(data: dict):

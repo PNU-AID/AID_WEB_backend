@@ -1,15 +1,14 @@
 from math import ceil
 
-from fastapi import APIRouter, Request, status
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-
 from backend.crud.submit import (
     get_count,
     read_all_submit,
     read_submit,
     update_is_pass,
 )
+from fastapi import APIRouter, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
 
