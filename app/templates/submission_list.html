@@ -44,6 +44,15 @@
         margin-top: 70px; /* Adjust the margin-top as needed */
     }
 
+    .list-row {
+        background-color: white;
+        transition: background-color 0.3s;
+    }
+
+    .list-row:hover {
+        background-color: #E6E6E6;
+    }
+
 </style>
 {% endblock head %}
 
@@ -73,7 +82,7 @@
         </thead>
         <tbody>
             {% for submit in submission %}
-            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
+            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" class="list-row" style="cursor:pointer">
                 <th>{{loop.index + (cur_page-1) * 10}}</th>
                 <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
