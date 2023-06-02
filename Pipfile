@@ -7,11 +7,20 @@ name = "pypi"
 uvicorn = "*"
 fastapi = "*"
 pymongo = "*"
+python-dotenv = "*"
+pydantic = {extras = ["email"], version = "*"}
+orjson = "*"
+pytest-order = "*"
+python-multipart = "*"
+jinja2 = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 pre-commit = "*"
 httpx = "*"
 pytest = "*"
+pytest-env = "*"
 
 [requires]
 python_version = "3.10"

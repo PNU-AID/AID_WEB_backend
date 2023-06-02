@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Submission Detail</title>
+{% endblock head %}
+
+{% block content %}
+{% include 'nav.html' %}
+
+<div class="d-flex flex-column">
+    <div>
+        <form action="/admin/change_status", method="post">
+            <div>
+                <label for="pass">합격</label>
+                <input type="radio" id="pass" name="is_pass" {% if submit_info.is_pass %} checked=true {% endif %} value="pass"/>
+            </div>
+            <div>
+                <label for="fail">불합격</label>
+                <input type="radio" id="fail" name="is_pass" {% if not submit_info.is_pass %} checked=true {% endif %} value="fail"/>
+            </div>
+            <input type="hidden" name="submit_id" value="{{submit_info._id}}">
+            <button type="submit">수정</buttom>
+        </form>
+    </div>
+
+    <div>
+        <div>이름</div>
+        <div>{{submit_info.username}}</div>
+    </div>
+    <div>
+        <div>이메일</div>
+        <div>{{submit_info.email}}</div>
+    </div>
+    <div>
+        <div>학번</div>
+        <div>{{submit_info.student_id}}</div>
+    </div>
+    <div>
+        <div>Python Skill</div>
+        <div>{{submit_info.python_skill}}</div>
+    </div>
+    <div>
+        <div>동아리 지원 계기(공백 포함 500자 이내)</div>
+        <div>{{submit_info.motivation}}</div>
+    </div>
+    <div>
+        <div>AI 관련 수강 과목(학교 수업이 아니어도 기재해주세요)</div>
+        <div>{{submit_info.ai_subject}}</div>
+    </div>
+    <div>
+        <div>본인이 하고 싶은 스터디</div>
+        <div>{{submit_info.study_want}}</div>
+    </div>
+    <div>
+        <div>본인이 해보고 싶은 프로젝트</div>
+        <div>{{submit_info.project_want}}</div>
+    </div>
+    <div>
+        <div>본인의 진로</div>
+        <div>{{submit_info.course}}</div>
+    </div>
+    <div>
+        <div>프로젝트 경험</div>
+        <div>{{submit_info.project_exp}}</div>
+    </div>
+    <div>
+        <div>Github 주소</div>
+        <div>{{submit_info.github}}</div>
+    </div>
+    <div>
+        <div>Blog 주소(Tech Blog)</div>
+        <div>{{submit_info.blog}}</div>
+    </div>
+</div>
+
+{% endblock content %}
