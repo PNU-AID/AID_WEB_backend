@@ -2,20 +2,70 @@
 
 {% block head %}
 <title>Submission list</title>
+<style>
+    .dashboard-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: 200px; /* Adjust the height as needed */
+        margin-top: -25px;
+    }
 
+    .dashboard-block {
+        flex: 0 0 calc(50% - 100px); /* Adjust the width and margin as needed */
+        height: 120px;
+        margin: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .list-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px; /* Adjust the height as needed */
+        margin-top: 50px; /* Adjust the margin-top as needed */
+    }
+
+    .table {
+        width: 80%;
+    }
+
+    nav {
+        margin-top: 70px; /* Adjust the margin-top as needed */
+    }
+</style>
 {% endblock head %}
 
 {% block content %}
 {% include 'nav.html' %}
 
-<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+<div class="dashboard-container">
+    <div class="dashboard-block">
+        <span>현재 지원자 수</span>
+    </div>
+    <div class="dashboard-block">
+        <span>메일 전송</span>
+    </div>
+</div>
+
+<div class="list-container">
     <table class="table">
         <thead>
             <tr>
-              <th scope="col">번호</th>
-              <th scope="col">제출 시간</th>
-              <th scope="col">이름</th>
-              <th scope="col">내용 요약</th>
+                <th scope="col">번호</th>
+                <th scope="col">제출 시간</th>
+                <th scope="col">이름</th>
+                <th scope="col">내용 요약</th>
             </tr>
         </thead>
         <tbody>
@@ -29,18 +79,26 @@
             {% endfor %}
         </tbody>
     </table>
-
-
-<div role = "navigation">
-    <table>
-        <tbody>
-            {% for x in range(first_idx, last_idx+1) %}
-            <td>
-                <a class = "p1" href = "/admin/?submit_page={{x}}" >{{x}}</a>
-            </td>
-            {% endfor %}
-        </tbody>
-    </table>
 </div>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if cur_page != 1 %}
+            <li class="page-item">
+                <a class="page-link" href="/admin/?submit_page={{ cur_page-1 }}">&laquo;</a>
+            </li>
+        {% endif %}
+        {% for x in range(first_idx, last_idx+1) %}
+            <li class="page-item {% if x == cur_page %}active{% endif %}">
+                <a class="page-link" href="/admin/?submit_page={{ x }}">{{ x }}</a>
+            </li>
+        {% endfor %}
+        {% if cur_page != last_page %}
+            <li class="page-item">
+                <a class="page-link" href="/admin/?submit_page={{ cur_page+1 }}">&raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
 
 {% endblock content %}
