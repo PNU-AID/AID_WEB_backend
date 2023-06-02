@@ -12,8 +12,6 @@ COPY ./app .
 COPY ./Pipfile .
 COPY ./Pipfile.lock .
 
-
-
 RUN pip install --upgrade pip && pip install pipenv
 
 RUN pipenv install --system --deploy

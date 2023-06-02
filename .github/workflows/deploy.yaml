@@ -28,13 +28,13 @@ jobs:
 
       run: |
         mkdir env
-        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./env/.db.env
-        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./env/.db.env
+        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./app/env/.db.env
+        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./app/env/.db.env
 
-        echo "mongo_user=$mongo_user" >> ./env/.server.env
-        echo "mongo_password=$mongo_password" >> ./env/.server.env
-        echo "mongo_host=$mongo_host" >> ./env/.server.env
-        echo "mongo_port=$mongo_port" >> ./env/.server.env
+        echo "mongo_user=$mongo_user" >> ./app/env/.server.env
+        echo "mongo_password=$mongo_password" >> ./app/env/.server.env
+        echo "mongo_host=$mongo_host" >> ./app/env/.server.env
+        echo "mongo_port=$mongo_port" >> ./app/env/.server.env
 
 
     # - name: Docker Metadata action
@@ -76,7 +76,7 @@ jobs:
         key: ${{ secrets.AWS_KEY }}
 
         script:
-          docker compose down
-          docker rmi ${{ secrets.DOCKER_ID }}/aid_web
-          docker pull ${{ secrets.DOCKER_ID }}/aid_web
-          docker compose up -d
+          sudo docker compose down
+          sudo docker rmi ${{ secrets.DOCKER_ID }}/aid_web
+          sudo docker pull ${{ secrets.DOCKER_ID }}/aid_web
+          sudo docker compose up

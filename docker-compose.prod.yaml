@@ -3,16 +3,15 @@ version: "3.8"
 services:
 
   server:
+
     container_name: Fastapi-server
+
+    image: bshlab671/aid_web:latest
 
     depends_on:
       - db
 
     restart: always
-
-    build:
-      context: .
-      dockerfile: Dockerfile
 
     ports:
       - 80:80
@@ -24,23 +23,22 @@ services:
       - aid
 
   db:
+
+    container_name: db
+
     image: mongo:latest
 
     restart: always
 
-    container_name: db
-
     volumes:
       - data-vol:/data/db
-
-    ports:
-      - 27017:27017
 
     expose:
       - 27017
 
-    env_file:
-      - ./app/env/.db.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin_user
+      - MONGO_INITDB_ROOT_PASSWORD=password
 
     networks:
       - aid
