@@ -65,4 +65,19 @@ jobs:
         context: .
         file: Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: |
+          ${{ steps.meta.outputs.tags }}
+          latest
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        password: ${{ secrets.AWS_PASSWORD }}
+
+        script:
+          docker compose down
+          docker rmi ${{ secrets.DOCKER_ID }}/aid_web
+          docker pull ${{ secrets.DOCKER_ID }}/aid_web
+          docker compose up -d
