@@ -52,10 +52,11 @@
 
 <div class="dashboard-container">
     <div class="dashboard-block">
-        <img src="FullMail" width="75" height="75" />
+        <img src="{{ url_for('static', path='images/FullMail.png') }}" width="120" height="120" />
         <span>현재 지원자 수: {{ data_cnt }}</span>
     </div>
     <div class="dashboard-block">
+        <img src="{{ url_for('static', path='images/SendMail.png') }}" width="140" height="140" />
         <span>메일 전송</span>
     </div>
 </div>
