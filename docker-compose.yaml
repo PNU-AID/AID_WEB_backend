@@ -1,6 +1,28 @@
 version: "3.8"
 
 services:
+
+  server:
+    container_name: Fastapi-server
+
+    depends_on:
+      - db
+
+    restart: always
+
+    build:
+      context: . # compose file에 대한 상대적인 위치
+      dockerfile: Dockerfile
+
+    ports:
+      - 80:80
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    networks:
+      - aid
+
   db:
     image: mongo:latest
 
@@ -15,4 +37,15 @@ services:
       - 27017
 
     env_file:
-      - ./env/.db.env
+      - ./app/env/.db.env
+
+    networks:
+      - aid
+
+networks:
+  aid:
+    driver: bridge
+
+volumes:
+  data-vol:
+    driver: local
