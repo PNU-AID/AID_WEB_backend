@@ -65,7 +65,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: Dockerfile
+        file: Dockerfile.prod
         push: true
         tags: bshlab671/aid_web:latest
 
