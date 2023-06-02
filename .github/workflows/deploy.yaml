@@ -73,7 +73,7 @@ jobs:
       with:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
-        password: ${{ secrets.AWS_PASSWORD }}
+        key: ${{ secrets.AWS_KEY }}
 
         script:
           docker compose down
