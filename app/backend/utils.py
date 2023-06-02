@@ -90,7 +90,6 @@ def make_dummy_submit():
         tmp["course"] = "없음"
         tmp["project_exp"] = "없음"
         tmp["is_pass"] = False
-
         dummies.append(tmp)
     db["submit"].insert_many(dummies)
 
