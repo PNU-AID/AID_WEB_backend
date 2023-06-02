@@ -27,7 +27,8 @@ jobs:
         mongo_port: ${{secrets.mongo_port}}
 
       run: |
-        mkdir env
+        ls
+        mkdir ./app/env
         echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./app/env/.db.env
         echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./app/env/.db.env
 
