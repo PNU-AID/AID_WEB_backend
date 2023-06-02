@@ -37,15 +37,16 @@ jobs:
         echo "mongo_port=$mongo_port" >> ./env/.server.env
 
 
-    - name: Docker Metadata action
-      # You may pin to the exact commit or the version.
-      # uses: docker/metadata-action@c4ee3adeed93b1fa6a762f209fb01608c1a22f1e
-      uses: docker/metadata-action@v4.4.0
-      id: meta
-      with:
-        images: bshlab671/aid_web
-        tags: |
-          type=sha
+    # - name: Docker Metadata action
+    #   uses: docker/metadata-action@v4.4.0
+    #   id: meta
+    #   with:
+    #     images: bshlab671/aid_web
+    #     tags: |
+    #       type=ref,event=branch
+    #       type=ref,event=pr
+    #       type=semver,pattern={{version}}
+    #       type=semver,pattern={{major}}.{{minor}}
 
 
     - name: Set up Docker Buildx
@@ -65,4 +66,17 @@ jobs:
         context: .
         file: Dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: bshlab671/aid_web:latest
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_KEY }}
+
+        script:
+          docker compose down
+          docker rmi ${{ secrets.DOCKER_ID }}/aid_web
+          docker pull ${{ secrets.DOCKER_ID }}/aid_web
+          docker compose up -d

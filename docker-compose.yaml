@@ -10,9 +10,7 @@ services:
 
     restart: always
 
-    build:
-      context: . # compose file에 대한 상대적인 위치
-      dockerfile: Dockerfile
+    image: bahlab671/aid_web:lastest
 
     ports:
       - 80:80
@@ -29,6 +27,9 @@ services:
     restart: always
 
     container_name: db
+
+    volumes:
+      - data-vol:/data/db
 
     ports:
       - 27017:27017
