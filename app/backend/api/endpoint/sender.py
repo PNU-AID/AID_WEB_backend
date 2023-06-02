@@ -78,7 +78,6 @@ async def sender(request: Request):
     subject = data["subject"] # 제목
     message = data["message"] # 본문
 
-    # attatch_files = ['cat.png']
     send_email(me, receivers, subject, message, passwd='발신자 메일 비밀번호 입력')
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
