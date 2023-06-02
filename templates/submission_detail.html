@@ -6,6 +6,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <link href="{{ url_for('static', path='css/bootstrap.css') }}" rel="stylesheet">
 <style>
+    .submission-detail__status {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: 200px; /* Adjust the height as needed */
+        margin-top: -25px;
+    }
+
+    .dashboard-block {
+        flex: 0 0 calc(90%); /* Adjust the width and margin as needed */
+        height: 170px;
+        margin: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
     .submission-detail {
         margin: 20px;
     }
@@ -58,6 +83,24 @@
 {% include 'nav.html' %}
 <link rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"/>
 <link href="{{ url_for('static', path='css/bootstrap.css') }}" rel="stylesheet">
+<div class="submission-detail__status">
+    <div class ="dashboard-block">
+    <form action="/admin/change_status" method="post">
+        <h4 class="submission-detail__status-title">결과</h4>
+        <div class="submission-detail__status-option">
+            <input class="form-check-input" type="radio" id="pass" name="is_pass" {% if submit_info.is_pass %} checked=true {% endif %} value="pass">
+            <label class="form-check-label" for="pass">합격  &nbsp &nbsp</label>
+
+            <input class="form-check-input" type="radio" id="fail" name="is_pass" {% if not submit_info.is_pass %} checked=true {% endif %} value="fail">
+            <label class="form-check-label" for="fail">불합격</label>
+        </div>
+        <input type="hidden" name="submit_id" value="{{submit_info._id}}">
+        <button type="submit" class="btn btn-primary" style="align:right">전송</button>
+    </div>
+
+    </form>
+</div>
+
 
 
 <div class="container submission-detail">
@@ -108,21 +151,6 @@
     <div class="submission-detail__field">
         <div class="submission-detail__label">Blog 주소 (Tech Blog):</div>
         <div class="submission-detail__value">{{ submit_info.blog }}</div>
-    </div>
-    <div class="submission-detail__status">
-        <form action="/admin/change_status" method="post">
-            <h4 class="submission-detail__status-title">합불 여부</h4>
-            <div class="submission-detail__status-option">
-                <input class="form-check-input" type="radio" id="pass" name="is_pass" {% if submit_info.is_pass %} checked=true {% endif %} value="pass">
-                <label class="form-check-label" for="pass">합격</label>
-            </div>
-            <div class="submission-detail__status-option">
-                <input class="form-check-input" type="radio" id="fail" name="is_pass" {% if not submit_info.is_pass %} checked=true {% endif %} value="fail">
-                <label class="form-check-label" for="fail">불합격</label>
-            </div>
-            <input type="hidden" name="submit_id" value="{{submit_info._id}}">
-            <button type="submit" class="btn btn-primary">수정</button>
-        </form>
     </div>
 
     <div class="container submission-detail__button-group">

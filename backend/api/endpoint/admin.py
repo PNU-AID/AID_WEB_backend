@@ -56,6 +56,7 @@ def submission_list_page(request: Request, submit_page: int = 1):
             "first_idx": first_idx,
             "last_idx": last_idx,
             "cur_page": submit_page,
+            "data_cnt": data_cnt,
         },
     )
 
