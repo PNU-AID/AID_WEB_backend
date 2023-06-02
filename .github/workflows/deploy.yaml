@@ -27,25 +27,26 @@ jobs:
         mongo_port: ${{secrets.mongo_port}}
 
       run: |
-        mkdir env
-        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./env/.db.env
-        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./env/.db.env
+        mkdir ./app/env
+        echo "MONGO_INITDB_ROOT_USERNAME=$mongo_user" >> ./app/env/.db.env
+        echo "MONGO_INITDB_ROOT_PASSWORD=$mongo_password" >> ./app/env/.db.env
 
-        echo "mongo_user=$mongo_user" >> ./env/.server.env
-        echo "mongo_password=$mongo_password" >> ./env/.server.env
-        echo "mongo_host=$mongo_host" >> ./env/.server.env
-        echo "mongo_port=$mongo_port" >> ./env/.server.env
+        echo "mongo_user=$mongo_user" >> ./app/env/.server.env
+        echo "mongo_password=$mongo_password" >> ./app/env/.server.env
+        echo "mongo_host=$mongo_host" >> ./app/env/.server.env
+        echo "mongo_port=$mongo_port" >> ./app/env/.server.env
 
 
-    - name: Docker Metadata action
-      # You may pin to the exact commit or the version.
-      # uses: docker/metadata-action@c4ee3adeed93b1fa6a762f209fb01608c1a22f1e
-      uses: docker/metadata-action@v4.4.0
-      id: meta
-      with:
-        images: bshlab671/aid_web
-        tags: |
-          type=sha
+    # - name: Docker Metadata action
+    #   uses: docker/metadata-action@v4.4.0
+    #   id: meta
+    #   with:
+    #     images: bshlab671/aid_web
+    #     tags: |
+    #       type=ref,event=branch
+    #       type=ref,event=pr
+    #       type=semver,pattern={{version}}
+    #       type=semver,pattern={{major}}.{{minor}}
 
 
     - name: Set up Docker Buildx
@@ -63,6 +64,19 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: Dockerfile
+        file: Dockerfile.prod
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: bshlab671/aid_web:latest
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_KEY }}
+
+        script: |
+          sudo docker compose down
+          sudo docker rmi ${{ secrets.DOCKERHUB_ID }}/aid_web
+          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/aid_web
+          sudo docker compose up -d
