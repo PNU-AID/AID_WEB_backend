@@ -74,6 +74,7 @@ jobs:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_KEY }}
+        timeout: 3m
 
         script: |
           sudo docker compose down
