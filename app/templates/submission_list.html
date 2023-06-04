@@ -88,7 +88,7 @@
         <img src="{{ url_for('static', path='images/FullMail.png') }}" width="120" height="120" />
         <span>현재 지원자 수: {{ data_cnt }}</span>
     </div>
-    <div class="dashboard-block">
+    <div class="dashboard-block" onclick="location.href='/sender'" style="cursor:pointer">
         <img src="{{ url_for('static', path='images/SendMail.png') }}" width="140" height="140" />
         <span>메일 전송</span>
     </div>
