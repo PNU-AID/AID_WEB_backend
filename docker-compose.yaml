@@ -2,8 +2,28 @@ version: "3.8"
 
 services:
 
+
+  web-server:
+    container_name: nginx
+
+    image: nginx:latest
+
+    restart: always
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+
+    ports:
+      - 80:80
+
+    networks:
+      - aid
+
   server:
-    container_name: Fastapi-server
+    container_name: FastapiApp
 
     depends_on:
       - db
@@ -14,8 +34,9 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    ports:
-      - 80:80
+    expose:
+      - 8000
+
 
     environment:
       TZ: "Asia/Seoul"
