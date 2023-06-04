@@ -121,7 +121,7 @@
     <ul class="pagination justify-content-center">
         {% if cur_page != 1 %}
             <li class="page-item">
-                <a class="page-link" href="/admin/?submit_page={{ cur_page-1 }}">&laquo;</a>
+                <a class="page-link" href="/admin/?submit_page={{ 1 }}">&laquo;</a>
             </li>
         {% endif %}
         {% for x in range(first_idx, last_idx+1) %}
@@ -131,7 +131,7 @@
         {% endfor %}
         {% if cur_page != last_page %}
             <li class="page-item">
-                <a class="page-link" href="/admin/?submit_page={{ cur_page+1 }}">&raquo;</a>
+                <a class="page-link" href="/admin/?submit_page={{ last_page }}">&raquo;</a>
             </li>
         {% endif %}
     </ul>
