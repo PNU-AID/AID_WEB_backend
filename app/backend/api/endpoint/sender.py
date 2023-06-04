@@ -1,10 +1,9 @@
-import os
 import smtplib
 from email.header import Header
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, Request, status, BackgroundTasks
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
@@ -21,7 +20,7 @@ def sender_page(request: Request):
 
 
 @router.post("/send_email")
-async def sender(request: Request):
+async def sender(request: Request, background_tasks: BackgroundTasks):
     # SMTP 서버를 dictionary로 정의
     smtp_info = {
         'gmail.com': ('smtp.gmail.com', 587),
@@ -66,7 +65,7 @@ async def sender(request: Request):
         
         smtp.login(From, passwd)
         smtp.sendmail(From, To, form.as_string())    
-        smtp.quit
+        smtp.quit()
 
 
     # 실제 함수 실행 부분
@@ -78,6 +77,6 @@ async def sender(request: Request):
     subject = data["subject"] # 제목
     message = data["message"] # 본문
 
-    send_email(me, receivers, subject, message, passwd='발신자 메일 비밀번호 입력')
+    background_tasks.add_task(send_email, me, receivers, subject, message, passwd='발신자 메일 비밀번호 입력')
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
