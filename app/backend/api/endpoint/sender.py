@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from backend.crud.user import read_all_is_pass_email
+from backend.core import settings
 
 router = APIRouter()
 
@@ -69,7 +70,7 @@ async def sender(request: Request, background_tasks: BackgroundTasks):
 
 
     # 실제 함수 실행 부분
-    me = '발신자 메일 입력'
+    me = settings.email_id
     data = await request.form()
     is_pass = True if data["status"] == "true" else False # 합격/불합격 선택 여부 확인
     receivers = read_all_is_pass_email(True) if is_pass else read_all_is_pass_email(False)
@@ -77,6 +78,6 @@ async def sender(request: Request, background_tasks: BackgroundTasks):
     subject = data["subject"] # 제목
     message = data["message"] # 본문
 
-    background_tasks.add_task(send_email, me, receivers, subject, message, passwd='발신자 메일 비밀번호 입력')
+    background_tasks.add_task(send_email, me, receivers, subject, message, passwd=settings.email_pw)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
