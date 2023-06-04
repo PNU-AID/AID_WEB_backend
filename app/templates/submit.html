@@ -2,6 +2,74 @@
 
 {% block head %}
 <title>Submit Page</title>
+<style>
+    button {
+        margin: 3px;
+    }
+    .w-btn {
+        position: relative;
+        border: none;
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .w-btn-outline {
+        position: relative;
+        padding: 15px 30px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .w-btn:hover {
+        letter-spacing: 2px;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+    .w-btn-outline:hover {
+        letter-spacing: 2px;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+    .w-btn:active {
+        transform: scale(1.5);
+    }
+
+    .w-btn-outline:active {
+        transform: scale(1.5);
+    }
+
+    .w-btn-gra1 {
+        background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);
+        color: white;
+    }
+
+    .w-btn-gra-anim {
+        background-size: 400% 400%;
+        animation: gradient1 5s ease infinite;
+    }
+
+    @keyframes gradient1 {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
 {% endblock head %}
 
 {% block content %}
@@ -61,7 +129,7 @@
             <label for="exampleFormControlInput1">Blog 주소(Tech Blog)</label>
             <input type="text" class="form-control" name="blog" value="{{blog}}" id="exampleFormControlInput1" placeholder="">
         </div>
-        <button type="submit" class="btn btn-primary">제출하기</button>
+        <button type="submit" class="w-btn w-btn-gra1 w-btn-gra-anim">제출하기</button>
     </form>
 </div>
 {% endblock content %}

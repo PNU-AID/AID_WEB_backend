@@ -3,12 +3,36 @@
 {% block head %}
 <title>Submission list</title>
 <style>
+
+    nav {
+        margin-top: 70px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+
+    nav .page-item .page-link {
+        background: linear-gradient(-45deg, #FFA3B1, #FFD8CB);
+        border-color: transparent;
+
+    }
+
+    nav .page-item.active .page-link {
+        color: white;
+        background: white;
+        color: #FFD8CB;
+        border-color: #FFD8CB;    }
+
+    nav .page-link:hover {
+        background: linear-gradient(-45deg, #FFA3B1, #FFD8CB);
+        color: white;
+    }
     .dashboard-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        height: 200px; /* Adjust the height as needed */
+        height: 200px;
         margin-top: -25px;
     }
 
@@ -32,8 +56,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 300px; /* Adjust the height as needed */
-        margin-top: 50px; /* Adjust the margin-top as needed */
+        height: 300px;
+        margin-top: 50px;
     }
 
     .table {
@@ -41,7 +65,16 @@
     }
 
     nav {
-        margin-top: 70px; /* Adjust the margin-top as needed */
+        margin-top: 70px;
+    }
+
+    .list-row {
+        background-color: white;
+        transition: background-color 0.3s;
+    }
+
+    .list-row:hover {
+        background-color: #E6E6E6;
     }
 
 </style>
@@ -73,7 +106,7 @@
         </thead>
         <tbody>
             {% for submit in submission %}
-            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" onmouseover="this.style.background='#E6E6E6'" onmouseout="this.style.background='white'" style="cursor:pointer">
+            <tr onclick="location.href='/admin/detail?submit_id={{submit._id}}'" class="list-row" style="cursor:pointer">
                 <th>{{loop.index + (cur_page-1) * 10}}</th>
                 <th>{{submit.created_time.strftime("%Y-%m-%d %H:%M")}}</th>
                 <th>{{submit.username}}</th>
