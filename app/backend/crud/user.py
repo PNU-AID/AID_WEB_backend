@@ -27,6 +27,12 @@ def read_user(user_nick_name: str):  # user읽기
     return user
 
 
+def read_all_is_pass_email(is_pass: bool):
+    cursor = db["submit"].find({"is_pass": is_pass}, {"email": 1})
+    email_list = [result["email"] for result in cursor]
+    return email_list
+
+
 def update_user(change_info):  # user 업데이트
     change_info = jsonable_encoder(change_info)
     user_id = change_info.pop("_id")
