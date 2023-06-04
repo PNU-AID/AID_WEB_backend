@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block head %}
 <html>
 <head>
   <title>이메일 전송창</title>
@@ -44,20 +45,26 @@
     }
   </style>
 </head>
+{% endblock head %}
+
+
+{% block content %}
+{% include 'nav.html' %}
 <body>
   <form action="/sender/send_email" method="post">
-    <h2>이메일 전송창</h2>
-    
+    <h2 style="color:black;">이메일을 전송해볼까욤?</h2>
+
     <label>합격/불합격 선택:</label>
     <label><input type="radio" name="status" value="true"> 합격</label>
     <label><input type="radio" name="status" value="false"> 불합격</label>
-    
+
     <label>제목:</label>
     <input type="text" name="subject" placeholder="이메일 제목을 입력하세요...">
     <label for="message">내용:</label>
     <textarea id="message" name="message" placeholder="이메일 내용을 입력하세요..." rows="8"></textarea>
-    
+
     <button class="submit-button" type="submit">전송</button>
   </form>
 </body>
 </html>
+{% endblock content %}
