@@ -10,23 +10,26 @@
         border-radius: 5px;
     }
 
-
-    nav .page-item .page-link {
+    .pagination .page-item .page-link {
         background: linear-gradient(-45deg, #FFA3B1, #FFD8CB);
         border-color: transparent;
-
+        color: white;
     }
 
-    nav .page-item.active .page-link {
+    .pagination .page-item.active .page-link {
         color: white;
         background: white;
         color: #FFD8CB;
-        border-color: #FFD8CB;    }
+        border-color: #FFD8CB;
+    }
 
-    nav .page-link:hover {
+    .pagination .page-item .page-link:hover {
         background: linear-gradient(-45deg, #FFA3B1, #FFD8CB);
+        filter: brightness(90%);
         color: white;
     }
+
+
     .dashboard-container {
         display: flex;
         flex-wrap: wrap;
