@@ -35,6 +35,11 @@ def home_page(request: Request, msg: str = None):
     return template.TemplateResponse("home.html", context={"request": request, "msg": msg})
 
 
+@app.get("/test")
+def test_page():
+    return {"message": "test"}
+
+
 # @app.on_event("startup")  # 서버 실행시
 # def start():
 # make_dummy_submit()
