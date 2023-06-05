@@ -81,17 +81,15 @@ jobs:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_KEY }}
-        timeout: 5m
+        timeout: 3m
 
         script: |
-          echo "hello world"
-
-# echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
-# sudo docker compose down
-# echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
-# sudo docker rmi ${{ secrets.DOCKERHUB_ID }}/aid_web
-# echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
-# sudo docker pull ${{ secrets.DOCKERHUB_ID }}/aid_web
-# echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
-# sudo docker compose up -d
-# echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
+          sudo docker compose down
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
+          sudo docker rmi ${{ secrets.DOCKERHUB_ID }}/aid_web
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
+          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/aid_web
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
+          sudo docker compose up -d
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
