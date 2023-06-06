@@ -105,14 +105,25 @@
         align-items: center;
     }
 </style>
+
+<script>
+function enterAction() {
+    var key = window.event.keyCode;
+}
+</script>
 {% endblock head %}
 
 {% block content %}
 {% include 'nav.html' %}
 
+
 <div class="form-container">
     <h2 style="color:black; text-align:center; margin: 20px;">동아리 지원서</h2>
-    <form method="post" action="/submit" onsubmit="return formCheck()" onkeydown="if (event.keyCode == 13) { event.preventDefault(); }">
+    <form
+        method="post"
+        action="/submit"
+        onkeydown="enterAction()">
+
 
         <div class="form-group">
             <label for="exampleFormControlInput1">이름</label>
