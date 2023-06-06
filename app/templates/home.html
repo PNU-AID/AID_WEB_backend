@@ -2,6 +2,92 @@
 
 {% block head %}
 <title>Home Page</title>
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: whitesmoke;
+    }
+
+    button {
+        margin: 20px;
+    }
+
+    .w-btn {
+        position: relative;
+        border: none;
+        display: inline-block;
+        padding: 15px 30px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .w-btn-outline {
+        position: relative;
+        padding: 15px 30px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .w-btn:hover {
+        letter-spacing: 2px;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+    .w-btn-outline:hover {
+        letter-spacing: 2px;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+    .w-btn:active {
+        transform: scale(1.5);
+    }
+
+    .w-btn-outline:active {
+        transform: scale(1.5);
+    }
+
+    .w-btn-gra1 {
+        background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);
+        color: white;
+    }
+
+    .w-btn-gra-anim {
+        background-size: 400% 400%;
+        animation: gradient1 5s ease infinite;
+    }
+
+    @keyframes gradient1 {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+
 {% endblock head %}
 
 
@@ -18,9 +104,10 @@
         <div class="d-flex fs-2">
             <p class="fw-bold">AID</p>eveloper
         </div>
-        <div>
-            <a class="btn btn-primary" href="/submit" role="button">지원하기</a>
-        </div>
+        <button class="w-btn w-btn-gra1 w-btn-gra-anim" onclick="location.href='/submit'">
+            지원하기
+        </button>
+
     </div>
 </div>
 {% endblock content %}

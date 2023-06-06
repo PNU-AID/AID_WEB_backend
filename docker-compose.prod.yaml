@@ -2,9 +2,28 @@ version: "3.8"
 
 services:
 
+  web-server:
+    container_name: nginx
+
+    image: nginx:latest
+
+    restart: always
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    volumes:
+      - ./config/nginx.prod.conf:/etc/nginx/nginx.conf
+
+    ports:
+      - 80:80
+
+    networks:
+      - aid
+
   server:
 
-    container_name: Fastapi-server
+    container_name: FastapiApp
 
     image: bshlab671/aid_web:latest
 
@@ -13,8 +32,8 @@ services:
 
     restart: always
 
-    ports:
-      - 80:80
+    expose:
+      - 8000
 
     environment:
       TZ: "Asia/Seoul"

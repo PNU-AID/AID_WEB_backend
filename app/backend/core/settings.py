@@ -13,6 +13,9 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     mongo_host: str
     mongo_port: str
 
+    email_id: str
+    email_pw: str
+
     # TODO
     # prod, dev env 분리 할 것
 

@@ -25,6 +25,9 @@ jobs:
         mongo_password: ${{secrets.mongo_password}}
         mongo_host: ${{secrets.mongo_host}}
         mongo_port: ${{secrets.mongo_port}}
+        email_id: ${{secrets.EMAIL_ID}}
+        email_pw: ${{secrets.EMAIL_PW}}
+
 
       run: |
         mkdir ./app/env
@@ -35,6 +38,10 @@ jobs:
         echo "mongo_password=$mongo_password" >> ./app/env/.server.env
         echo "mongo_host=$mongo_host" >> ./app/env/.server.env
         echo "mongo_port=$mongo_port" >> ./app/env/.server.env
+        echo "email_id=$email_id" >> ./app/env/.server.env
+        echo "email_pw=$email_pw" >> ./app/env/.server.env
+
+
 
 
     # - name: Docker Metadata action
@@ -74,9 +81,12 @@ jobs:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_KEY }}
+        timeout: 3m
 
         script: |
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
           sudo docker compose down
           sudo docker rmi ${{ secrets.DOCKERHUB_ID }}/aid_web
           sudo docker pull ${{ secrets.DOCKERHUB_ID }}/aid_web
           sudo docker compose up -d
+          echo "data now : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)"
