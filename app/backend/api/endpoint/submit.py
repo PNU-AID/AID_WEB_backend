@@ -24,7 +24,11 @@ async def submit(request: Request):
     await form.load_data()
 
     if form.is_valid():  # 제출 버튼을 클릭한 경우에만 제출
-        create_submit(form.send_data())
-        return responses.RedirectResponse("/?msg=success", status_code=status.HTTP_302_FOUND)
+        try:
+            create_submit(form.send_data())
+            return responses.RedirectResponse("/?msg=success", status_code=status.HTTP_302_FOUND)
+        except Exception as e:
+            print(e)
+            return responses.RedirectResponse("/?msg=fail", status_code=status.HTTP_302_FOUND)
 
     return template.TemplateResponse("submit.html", context=form.__dict__)

@@ -99,6 +99,10 @@
     <div class="alert alert-info" role="alert">
         제출이 성공적으로 완료되었습니다
     </div>
+    {% elif msg == "fail" %}
+    <div class="alert alert-danger" role="alert">
+        제출에 실패했습니다
+    </div>
     {% endif %}
     <div class="d-flex flex-column justify-content-center align-items-center shadow p-3 mb-5 bg-body-tertiary rounded" style="height: 30vh; width: 30vw">
         <div class="d-flex fs-2">
