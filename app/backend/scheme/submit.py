@@ -14,11 +14,11 @@ class SubmitForm:
     student_id: str
     python_skill: str
     motivation: str
+    field: str
     github: Optional[str]
     blog: Optional[str]
     ai_subject: Optional[str]
-    study_want: Optional[str]
-    project_want: Optional[str]
+    want_to_do: Optional[str]
     course: Optional[str]
     project_exp: Optional[str]
     """

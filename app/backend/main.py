@@ -1,15 +1,17 @@
 from backend.api import api_router
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 origins = [
     "*",
 ]
+
+whitelist_ip = ["180.182.223.158"]
 
 
 app.add_middleware(
@@ -19,6 +21,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def ip_check(request: Request, call_next):
+    path = request.scope["path"]
+    ip = request.headers.get("X-Forwarded-For").split(", ")[0]
+    if "admin" in path:
+        if ip not in whitelist_ip:
+            data = {"message": "you are not allowed to access this resource"}
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=data)
+    response = await call_next(request)
+    return response
+
 
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 
@@ -33,6 +48,11 @@ app.include_router(
 @app.get("/", response_class=HTMLResponse)
 def home_page(request: Request, msg: str = None):
     return template.TemplateResponse("home.html", context={"request": request, "msg": msg})
+
+
+@app.get("/faq", response_class=HTMLResponse)
+def faq_page(request: Request):
+    return template.TemplateResponse("faq.html", context={"request": request})
 
 
 # @app.on_event("startup")  # 서버 실행시

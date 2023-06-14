@@ -139,9 +139,25 @@ function enterAction() {
         <div class="form-group">
             <label for="exampleFormControlSelect1">Python Skill</label>
             <select class="form-control" name="python_skill" value="{{python_skill}}" id="exampleFormControlSelect1">
-                <option>상(파이썬 작동원리를 이해하고, 구체적인 프로젝트 경험이 있음)</option>
-                <option>중(공식 reference 를 참고해 프로그램 제작이 가능)</option>
+                <option>상(파이썬 작동원리를 이해하고 있으며, 파이썬 관련 프로젝트 경험이 있음)</option>
+                <option>중(공식 reference를 참고해 프로그램 제작이 가능)</option>
                 <option>하(파이썬 코드를 보고 대략적인 흐름 이해 가능)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">지원 분야</label>
+            <select class="form-control" name="field" value="{{field}}" id="exampleFormControlSelect1">
+                <option>기초</option>
+                <option>CV(컴퓨터 비전)</option>
+                <option>NLP(자연어)</option>
+                <option>RecSys(추천 시스템)</option>
+                <option>오디오 처리</option>
+                <option>시계열 처리</option>
+                <option>강화학습</option>
+                <option>MLops</option>
+                <option>경량화</option>
+                <option>백엔드(FastAPI)</option>
+                <option>프론트엔드(React)</option>
             </select>
         </div>
         <div class="form-group">
@@ -153,12 +169,8 @@ function enterAction() {
             <textarea class="form-control" name="ai_subject" value="{{ai_subject}}" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">본인이 하고 싶은 스터디</label>
-            <textarea class="form-control" name="study_want" value="{{study_want}}" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea1">본인이 해보고 싶은 프로젝트</label>
-            <textarea class="form-control" name="project_want" value="{{project_want}}" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="exampleFormControlTextarea1">본인이 하고 싶은 스터디 혹은 프로젝트</label>
+            <textarea class="form-control" name="want_to_do" value="{{want_to_do}}" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <div class="form-group">
             <label for="exampleFormControlTextarea1">본인의 진로</label>
