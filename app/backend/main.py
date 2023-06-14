@@ -11,6 +11,8 @@ origins = [
     "*",
 ]
 
+whitelist_ip = []
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,6 +21,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def ip_check(request: Request, call_next):
+    path = request.scope["path"]
+    print(path)
+    real_ip = request.headers.get("X-Real-IP")
+    forward_ip = request.headers.get("X-Forwarded-For")
+    if "admin" in path:
+        print(f"real_ip check: {real_ip}")
+        print(f"forward_ip check: {forward_ip}")
+
+    response = await call_next(request)
+    return response
+
 
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 

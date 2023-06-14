@@ -15,11 +15,6 @@ router = APIRouter()
 template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
 
-@router.middleware("http")
-def middleward(request: Request):
-    pass
-
-
 @router.get("", response_class=HTMLResponse)
 def submission_list_page(request: Request, submit_page: int = 1):
     """admin 페이지 반환"""
