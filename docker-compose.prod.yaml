@@ -56,8 +56,8 @@ services:
       - 27017
 
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin_user
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=***
+      - MONGO_INITDB_ROOT_PASSWORD=***
 
     networks:
       - aid

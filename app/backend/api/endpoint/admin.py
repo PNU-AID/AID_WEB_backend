@@ -14,22 +14,10 @@ router = APIRouter()
 
 template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
-"""
-# 로그인 화면
-@router.get("", response_class=HTMLResponse)
-def login_page(request: Request):
-    return template.TemplateResponse("login.html", context={"request": request})
 
-
-@router.post("", response_class=HTMLResponse)
-def login(request: Request, username: str = Form(...), password: str = Form(...)):
-    user = db["user"].find_one({"username": "admin"})
-    if username == "admin" and user["password"] == password:
-        all_data = read_all_submit()
-        return template.TemplateResponse("submission_list.html", context={"request": request, "submission": all_data})
-    else:
-        return template.TemplateResponse("login.html", context={"request": request, "message": "잘못된 ID입니다."})
-"""
+@router.middleware("http")
+def middleward(request: Request):
+    pass
 
 
 @router.get("", response_class=HTMLResponse)
