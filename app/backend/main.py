@@ -1,7 +1,7 @@
 from backend.api import api_router
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -11,7 +11,7 @@ origins = [
     "*",
 ]
 
-whitelist_ip = ["180.182.223.158"]
+whitelist_ip = []
 
 
 app.add_middleware(
@@ -23,22 +23,22 @@ app.add_middleware(
 )
 
 
-@app.middleware("http")
-async def ip_check(request: Request, call_next):
-    path = request.scope["path"]
-    ip = request.headers.get("X-Forwarded-For").split(", ")[0]
-    if "admin" in path:
-        if ip not in whitelist_ip:
-            data = {"message": "you are not allowed to access this resource"}
-            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=data)
-    response = await call_next(request)
-    return response
+# @app.middleware("http")
+# async def ip_check(request: Request, call_next):
+#     path = request.scope["path"]
+#     ip = request.headers.get("X-Forwarded-For").split(", ")[0]
+#     if "admin" in path:
+#         if ip not in whitelist_ip:
+#             data = {"message": "you are not allowed to access this resource"}
+#             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=data)
+#     response = await call_next(request)
+#     return response
 
 
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 
-template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
+template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
 app.include_router(
     api_router, prefix=""
