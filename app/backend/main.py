@@ -1,3 +1,6 @@
+from typing import Any
+
+import jinja2
 from backend.api import api_router
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,6 +24,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@jinja2.pass_context
+def url_for(context: dict, name: str, **path_params: Any):
+    request = context["request"]
+    http_url = request.url_for(name, **path_params)
+    if request.url.scheme == "https" or "x-forwarded-for" in request.headers.keys():
+        return http_url.replace("http", "https", 1)
+    else:
+        return http_url
 
 
 # @app.middleware("http")
