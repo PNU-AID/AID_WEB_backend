@@ -1,3 +1,6 @@
+from typing import Any
+
+import jinja2
 from backend.api import api_router
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,6 +26,16 @@ app.add_middleware(
 )
 
 
+@jinja2.pass_context
+def url_for(context: dict, name: str, **path_params: Any):
+    request = context["request"]
+    http_url = request.url_for(name, **path_params)
+    if request.url.scheme == "https" or "x-forwarded-for" in request.headers.keys():
+        return http_url.replace("http", "https", 1)
+    else:
+        return http_url
+
+
 @app.middleware("http")
 async def ip_check(request: Request, call_next):
     path = request.scope["path"]
@@ -37,8 +50,8 @@ async def ip_check(request: Request, call_next):
 
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 
-template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
+template = Jinja2Templates(directory="templates")  # terminal 기준 path
 
 app.include_router(
     api_router, prefix=""

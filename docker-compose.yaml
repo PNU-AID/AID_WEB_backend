@@ -34,6 +34,11 @@ services:
       context: .
       dockerfile: Dockerfile
 
+    volumes:
+      - ./app:/app
+
+    command: sh -c "cd /app && uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"
+
     expose:
       - 8000
 

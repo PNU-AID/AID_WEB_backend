@@ -9,21 +9,21 @@
 {% block content %}
 {% include 'nav.html' %}
 
-<div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+<div class="d-flex flex-column justify-content-center align-items-start" style="height: 100vh;">
     <h1>FAQ</h1>
     <div class="d-flex flex-column p-3">
         <div>Q: 초보자도 지원할 수 있나요?</div>
         <div>
             A: <br/>
-            기초: 최소 Python 프로그래밍은 할 줄 아셔야하고 미적분, 확률, 통계 기초정도는 알고 있어야합니다<br/>
-            백엔드: 프로젝트 경험이 있으며 Python에 능숙하셔야 합니다.<br/>
+            기초: 최소 Python 프로그래밍은 할 줄 아셔야하고(기초 자료형 이해하며 간단한 함수작성 가능) 고등학교 수준의 미적분, 확률, 통계 기초정도는 알고 있어야합니다<br/>
+            백엔드: 프로젝트 경험이 있으며 Python에 능숙하셔야 합니다.(FastAPI 사용)<br/>
             프론트엔드: JavaScript 코딩 경험만 있으면 가능합니다.<br/>
-            나머지 분야: 각각 다른 조건을 요구하지만 논문 리뷰, 구현 경험이 있거나 데이콘, 캐글 참여 경험, 혹은 딥러닝 프레임워크 사용경험이 있어야합니다<br/>
+            나머지 분야: 각각 다른 조건을 요구하지만 최소 딥러닝 관련 기초지식 및 딥러닝 프레임워크 사용경험이 있어야합니다<br/>
         </div>
     </div>
     <div class="d-flex flex-column p-3">
         <div>Q: 타과생도 참여 가능한가요?</div>
-        <div>A: 지원에는 아무런 제한 없습니다. 휴학생, 재학생, 복부전생, 타과생, 대학원생 다 가능합니다.</div>
+        <div>A: 네 가능합니다. 지원에는 아무런 제한 없습니다.</div>
     </div>
     <div class="d-flex flex-column p-3">
         <div>Q: 지원 내용을 잘못적었을 경우 어떻게 하나요?</div>
@@ -31,11 +31,20 @@
     </div>
     <div class="d-flex flex-column p-3">
         <div>Q: 동아리 합격 후 지원분야 변경이 가능한가요?</div>
-        <div>A: 네 가능합니다. 본인의 역량이나 진로에 맞춰서 하시면 자유롭게 선택하시면 됩니다</div>
+        <div>A: 네 가능합니다. 다만 변경시 따로 역량 확인을 할 예정이며 진로에 맞춰서 자유롭게 선택하실 수 있습니다.</div>
     </div>
     <div class="d-flex flex-column p-3">
         <div>Q: 동아리 모집 인원은 몇명인가요?</div>
-        <div>A: 30명 내외로 생각해주시면 될 것 같습니다</div>
+        <div>A: 기존 인원 제외 30명 내외로 생각해주시면 될 것 같습니다</div>
+    </div>
+    <div class="d-flex flex-column p-3">
+        <div>Q: 스터디 진행 방식은 어떻게 되나요?</div>
+        <div>
+            A: <br/>
+            스터디 및 프로젝트, 대회는 자율적으로 모집하며 디스코드에서 모집하면 됩니다.<br/>
+            주 1회 비대면, 대면 상관없이 한번 회의하시고 누구든 청강 가능하도록 할 예정입니다.<br/>
+            스터디 할만한 강의 및 스터디는 가이드라인 참고하시면 됩니다.<br/>
+        </div>
     </div>
 </div>
 {% endblock content %}
