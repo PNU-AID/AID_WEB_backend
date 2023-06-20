@@ -29,13 +29,14 @@ app.add_middleware(
 
 
 @jinja2.pass_context
-def url_for(context: dict, name: str, **path_params: Any):
+def url_for(context: dict, name: str, **path_params: Any) -> str:
     request = context["request"]
     http_url = request.url_for(name, **path_params)
-    if request.url.scheme == "https" or "x-forwarded-for" in request.headers.keys():
-        return http_url.replace("http", "https", 1)
+
+    if request.url.scheme == "https":
+        return str(http_url).replace("http", "https", 1)
     else:
-        return http_url
+        return str(http_url)
 
 
 @app.middleware("http")
