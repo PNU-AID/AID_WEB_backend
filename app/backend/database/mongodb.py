@@ -10,7 +10,7 @@ client = MongoClient(
     f"{settings.mongo_host}:"
     f"{settings.mongo_port}/?authMechanism=DEFAULT"
 )
-print(client.server_info())
+# print(client.server_info())
 # db = client["AID_test"]
 db = client["AID"]
 
