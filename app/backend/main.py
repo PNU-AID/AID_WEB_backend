@@ -4,6 +4,8 @@ import jinja2
 from backend.api import api_router
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+
+# from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -16,7 +18,7 @@ origins = [
 
 whitelist_ip = ["180.182.223.158"]
 
-
+# app.add_middleware(HTTPSRedirectMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -50,8 +52,9 @@ async def ip_check(request: Request, call_next):
 
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 
-
 template = Jinja2Templates(directory="templates")  # terminal 기준 path
+template.env.globals["url_for"] = url_for
+
 
 app.include_router(
     api_router, prefix=""
