@@ -14,7 +14,7 @@ origins = [
     "*",
 ]
 
-whitelist_ip = ["180.182.223.158"]
+whitelist_ip = ["180.182.223.158", "211.203.66.57", "118.218.116.166"]
 
 app.add_middleware(
     CORSMiddleware,
