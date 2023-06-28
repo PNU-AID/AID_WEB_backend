@@ -1,8 +1,8 @@
-from backend.api.endpoint import (
+from backend.api.v1 import (
     admin_router,
     auth_router,
-    submit_router,
     sender_router,
+    submit_router,
 )
 from fastapi import APIRouter
 
