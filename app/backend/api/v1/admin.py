@@ -8,8 +8,8 @@ def read_all():
     pass
 
 
-@router.get("/detail")
-def read_one():
+@router.get("/read")
+def read_one(user_id: str):
     pass
 
 
