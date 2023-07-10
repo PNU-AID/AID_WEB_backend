@@ -11,7 +11,11 @@ class MongoManager:
     def __init__(self):
         self.clinet: MongoClient = None
         self.db: Database = None
-        self.db_logger = logger.get_logger("db_logger")
+        self.db_logger = None
+
+    def connect_logger(self):
+        # logger 선언 순서 때문에 함수를 통해 연결
+        self.db_logger = logger.get_logger("db_log")
 
     def connect_to_db(self):
         self.db_logger.info("Connecting to MongoDB...")

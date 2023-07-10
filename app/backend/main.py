@@ -24,12 +24,13 @@ app.include_router(api_router, prefix="/api")
 
 @app.on_event("startup")  # 서버 실행시
 async def startup():
-    logger.add_logger("db_log", "db_log")
-    logger.add_logger("server_log", "server_log")
+    logger.add_logger("db_log", "db_log.log")
+    logger.add_logger("server_log", "server_log.log")
 
-    await db_manager.connect_to_db()
+    db_manager.connect_logger()
+    db_manager.connect_to_db()
 
 
 @app.on_event("shutdown")
 async def shutdown():
-    await db_manager.close_db_connection()
+    db_manager.close_db_connection()
