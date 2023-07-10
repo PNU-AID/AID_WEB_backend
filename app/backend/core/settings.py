@@ -22,6 +22,3 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     class Confing:
         env_file = "./env/.server.env"
         env_file_encoding = "utf-8"
-
-
-settings = Settings()

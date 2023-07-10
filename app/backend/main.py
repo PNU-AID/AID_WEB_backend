@@ -1,4 +1,6 @@
 from backend.api import api_router
+from backend.core import logger
+from backend.database import db_manager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,18 +19,17 @@ app.add_middleware(
 )
 
 
-app.include_router(
-    api_router, prefix="/api"
-)  # 여기서 api_router는 ./api/endpoint/api.py에 있는 api_router변수로, submit, auth api가 include돼있다.
+app.include_router(api_router, prefix="/api")
 
 
-# @app.on_event("startup")  # 서버 실행시
-# def start():
-# make_dummy_submit()
-# make_super_user()
+@app.on_event("startup")  # 서버 실행시
+async def startup():
+    logger.add_logger("db_log", "db_log")
+    logger.add_logger("server_log", "server_log")
+
+    await db_manager.connect_to_db()
 
 
-# @app.on_event("shutdown")
-# def finish():
-#     delete_dummy_submit()
-#     delete_super_user()
+@app.on_event("shutdown")
+async def shutdown():
+    await db_manager.close_db_connection()

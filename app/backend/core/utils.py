@@ -1,3 +1,5 @@
+import logging
+
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
 import random
 from datetime import datetime
@@ -105,3 +107,25 @@ def make_super_user():
 
 def delete_super_user():
     db["user"].delete_one({"username": "admin"})
+
+
+# ----- Logger -----
+class Logger:
+    def __init__(self):
+        self.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(message)s")
+        self.logger_lst = {}
+
+    def add_logger(self, logger_name, file_name, logging_level=logging.INFO):
+        if self.logger_lst.get(logger_name, 0) != 0:
+            # you can not make same name logger
+            return
+        handler = logging.FileHandler(file_name)
+        handler.setFormatter(self.formatter)
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging_level)
+        logger.addHandler(handler)
+
+        self.logger_lst[logger_name] = logger
+
+    def get_logger(self, logger_name):
+        return self.logger_lst.get(logger_name, None)
