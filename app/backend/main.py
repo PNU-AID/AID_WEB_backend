@@ -4,7 +4,7 @@ from backend.database import db_manager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI()
 
 origins = [
     "*",
