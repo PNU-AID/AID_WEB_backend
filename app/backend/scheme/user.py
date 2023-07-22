@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from backend.utils import ObjectIdStr
 from pydantic import BaseModel, EmailStr, Field
@@ -13,6 +14,37 @@ class User(BaseModel):
     email: EmailStr = Field(...)
     is_club_member: bool = Field(default=False)
     admin: bool = Field(default=False)
+    email: str = Field(...)
+    real_name: str = Field(...)
+    application: str = Field(...)
+    articles: List[str] = []
+
+
+{
+    "title": "user",
+    "required": [
+        "_id",
+        "password",
+        "is_member",
+        "is_admin",
+        "email",
+        "nick_name",
+        "real_name",
+        "application",
+        "articles",
+    ],
+    "properties": {
+        "_id": {"bsonType": "objectId"},
+        "name": {"bsonType": "string"},
+        "is_member": {"bsonType": "bool"},
+        "is_admin": {"bsonType": "bool"},
+        "email": {"bsonType": "string"},
+        "nick_name": {"bsonType": "string"},
+        "real_name": {"bsonType": "string"},
+        "application": {"bsonType": "array"},
+        "articles": {"bsonType": "array"},
+    },
+}
 
 
 # UserCreate 클래스는 User 클래스를 상속받아 create_time, password 필드를 추가로 정의하고 있습니다.
