@@ -9,9 +9,10 @@ from pymongo.database import Database
 
 class MongoManager:
     def __init__(self):
-        self.clinet: MongoClient = None
+        self.client: MongoClient = None
         self.db: Database = None
         self.db_logger = None
+        self.db_name = "AID"
 
     def connect_logger(self):
         # logger 선언 순서 때문에 함수를 통해 연결
@@ -19,13 +20,13 @@ class MongoManager:
 
     def connect_to_db(self):
         self.db_logger.info("Connecting to MongoDB...")
-        self.clinet = MongoClient(
+        self.client = MongoClient(
             f"mongodb://{settings.mongo_user}:"
             f"{settings.mongo_password}@"
             f"{settings.mongo_host}:"
             f"{settings.mongo_port}/?authMechanism=DEFAULT"
         )
-        self.db = self.clinet["AID"]
+        self.db = self.client.get_database(self.db_name)
         self.db_logger.info("Connected to MongoDB.")
 
     def close_db_connection(self):

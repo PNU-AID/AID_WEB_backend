@@ -1,3 +1,4 @@
+from backend.database import db_manager
 from backend.scheme import UserCreate
 from fastapi import APIRouter
 
@@ -9,7 +10,7 @@ router = APIRouter()  # auth 라우터를 위한 api router 선언부
 @router.post("/signup")
 def create_user(user: UserCreate):
     # 유저 password hashing
-    return user
+    db_manager.db.test.insert_one({"test": "test"})
 
 
 @router.post("/login")
