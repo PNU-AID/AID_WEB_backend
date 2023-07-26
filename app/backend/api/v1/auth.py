@@ -1,20 +1,39 @@
-from backend.database import db_manager
-from backend.scheme import UserCreate
+from backend.scheme import UserCreate, UserLogIn
 from fastapi import APIRouter
+from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter()  # auth 라우터를 위한 api router 선언부
 
-# author에 대한 api를 담은 코드
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 
 @router.post("/signup")
-def create_user(user: UserCreate):
-    # 유저 password hashing
-    db_manager.db.test.insert_one({"test": "test"})
+def signup(user: UserCreate):
+    # TODO
+    # valid user email
+    valid = True
+    if valid:
+        print(user)
+        # print(get_password_hash(user.password))
+        # create_user(user)
+    else:
+        return {"message": "signup fail"}
+    return {"message": "signup success"}
 
 
 @router.post("/login")
-def login(user: UserCreate):
+def login(user: UserLogIn):
     """login 하는 api
 
     Args:
@@ -23,6 +42,7 @@ def login(user: UserCreate):
     Returns:
         _type_: _description_
     """
+
     return user
 
 
