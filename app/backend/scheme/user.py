@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import List
-
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
@@ -15,15 +12,6 @@ class User(BaseModel):
 
 
 class UserCreate(User):
-    nick_name: str | None = None
-    created_time: datetime = Field(default_factory=datetime.now)
-    is_club_member: bool = Field(default=False)
-    admin: bool = Field(default=False)
-    real_name: str | None = None
-    submit: str | None = None
-    articles: List[str] = []
-    # 필수적인 설정 이외의 것들은 서버로 뺄 것
-
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}

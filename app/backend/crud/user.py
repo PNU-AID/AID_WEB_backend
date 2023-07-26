@@ -1,8 +1,15 @@
+from backend.core import hasher
 from backend.database import db_manager
 from backend.scheme import UserCreate
+from fastapi.encoders import jsonable_encoder
 
 
-def create_user(user: UserCreate):  # user create를 상속받는 create기능 구현
+def create_user(user: UserCreate):
+    # json변환
+    user = jsonable_encoder(user)
+    # hash
+    user["password"] = hasher.get_password_hash(user["password"])
+    # inser to db
     db_manager.db.user.insert_one({**user})
 
 
