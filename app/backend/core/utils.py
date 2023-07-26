@@ -98,3 +98,11 @@ class Hasher:
 
     def get_password_hash(self, password):
         return self.pwd_context.hash(password)
+
+
+# ----- serializer -----
+def serializer(item) -> dict:
+    return {
+        **{"id": str(item[i]) for i in item if i == "_id"},
+        **{i: item[i] for i in item if i != "_id"},
+    }
