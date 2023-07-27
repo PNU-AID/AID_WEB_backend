@@ -1,21 +1,28 @@
-from backend.database import db_manager
-from backend.scheme import UserCreate
+from backend.crud import create_user
+from backend.scheme import UserCreate, UserLogIn
 from fastapi import APIRouter
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter()  # auth 라우터를 위한 api router 선언부
 
-# author에 대한 api를 담은 코드
-
 
 @router.post("/signup")
-def create_user(user: UserCreate):
-    # 유저 password hashing
-    db_manager.db.test.insert_one({"test": "test"})
-    db_manager.db.test.insert_one("test")
+def signup(user: UserCreate):
+    # TODO
+    # valid user email
+    valid = True
+    if valid:
+        create_user(user)
+    else:
+        return {"message": "signup fail"}
+
+    return {"message": "signup success"}
 
 
 @router.post("/login")
-def login(user: UserCreate):
+def login(user: UserLogIn):
     """login 하는 api
 
     Args:
@@ -24,6 +31,7 @@ def login(user: UserCreate):
     Returns:
         _type_: _description_
     """
+
     return user
 
 

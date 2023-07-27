@@ -1,5 +1,3 @@
-from typing import List
-
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
@@ -9,31 +7,16 @@ from pydantic import BaseModel, EmailStr, Field
 class User(BaseModel):
     # User 클래스는 BaseModel을 상속받아 nick_name, email, is_club_member, admin 필드를 정의
     # https://www.mongodb.com/community/forums/t/why-do-we-need-alias-id-in-pydantic-model-of-fastapi/170728/3
-    nick_name: str = Field(...)
     email: EmailStr = Field(...)
+    password: str = Field(...)
 
 
 class UserCreate(User):
-    is_club_member: bool = Field(default=False)
-    admin: bool = Field(default=False)
-    real_name: str | None = None
-    submit: str | None = None
-    articles: List[str] = []
-
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        schema_extra = {
-            "example": {
-                "nick_name": "test",
-                "email": "test@example.com",
-            }
-        }
+        schema_extra = {"example": {"email": "test@example.com", "password": "password"}}
 
 
-class Userout(User):
-    is_club_member: bool = Field(default=False)
-    admin: bool = Field(default=False)
-    real_name: str | None = None
-    submit: str | None = None
-    articles: List[str] = []
+class UserLogIn(User):
+    pass
