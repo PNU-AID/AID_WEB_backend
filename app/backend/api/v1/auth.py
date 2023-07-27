@@ -11,6 +11,7 @@ router = APIRouter()  # auth 라우터를 위한 api router 선언부
 def create_user(user: UserCreate):
     # 유저 password hashing
     db_manager.db.test.insert_one({"test": "test"})
+    db_manager.db.test.insert_one("test")
 
 
 @router.post("/login")
