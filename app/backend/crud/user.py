@@ -1,14 +1,28 @@
+from datetime import datetime
+
 from backend.core import hasher
 from backend.database import db_manager
 from backend.scheme import UserCreate
 from fastapi.encoders import jsonable_encoder
 
 
-def create_user(user: UserCreate):
+def create_user(user: UserCreate, is_admin=False):
     # json변환
     user = jsonable_encoder(user)
     # hash
     user["password"] = hasher.get_password_hash(user["password"])
+
+    user["created_time"] = datetime.now()
+    if is_admin:
+        user["is_admin"] = True
+    else:
+        user["is_admin"] = False
+
+    user["is_member"] = False
+    user["submit"] = None
+    user["articles"] = []
+    user["nick_name"] = None
+
     # inser to db
     db_manager.db.user.insert_one({**user})
 
