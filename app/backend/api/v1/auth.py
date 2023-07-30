@@ -46,8 +46,8 @@ def logout(user: UserCreate):
     return user
 
 
-@router.delete("/signout")
-def signout(user: UserCreate):
+@router.delete("/withdraw")
+def withdraw_account(user: UserCreate):
     # 유저 password hashing
     return user
 

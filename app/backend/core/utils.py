@@ -1,4 +1,6 @@
 import logging
+import random
+import string
 
 from bson import ObjectId
 from email_validator import EmailNotValidError, validate_email
@@ -125,3 +127,10 @@ def EmailValidator(email):
         # not a valid (or deliverable) email address.
         print(e)
         return False
+
+
+# ----- random string -----
+def get_random_name(length: int) -> str:
+    letter_set = string.ascii_letters + string.digits
+    random_name = [random.choice(letter_set) for _ in range(length)]
+    return "user-" + "".join(random_name)
