@@ -6,7 +6,7 @@ from fastapi.encoders import jsonable_encoder
 
 def create_user(user: UserCreate):
     # json변환
-    user = jsonable_encoder(user)
+    user = jsonable_encoder(user)  # parameter로 받은 pydantic 모델을 json형태로 변환
     # hash
     user["password"] = hasher.get_password_hash(user["password"])
     # inser to db

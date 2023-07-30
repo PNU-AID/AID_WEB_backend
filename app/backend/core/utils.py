@@ -1,6 +1,7 @@
 import logging
 
 from bson import ObjectId
+from email_validator import EmailNotValidError, validate_email
 from passlib.context import CryptContext
 
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
@@ -106,3 +107,21 @@ def serializer(item) -> dict:
         **{"id": str(item[i]) for i in item if i == "_id"},
         **{i: item[i] for i in item if i != "_id"},
     }
+
+
+def EmailValidator(email):
+    try:
+        # email주소가 valid한지 확인한다. 처음 sign up할때만 deliverablity(정상적으로 수신자에게 도달하는 능력)가 true로 설정해야함.
+
+        emailinfo = validate_email(email, check_deliverability=False)
+
+        # After this point, use only the normalized form of the email address,
+        # especially before going to a database query.
+        # email = emailinfo.normalized
+        return emailinfo
+
+    except EmailNotValidError as e:
+        # The exception message is human-readable explanation of why it's
+        # not a valid (or deliverable) email address.
+        print(e)
+        return False
