@@ -114,4 +114,4 @@ def serializer(item) -> dict:
 def get_random_name(length: int) -> str:
     letter_set = string.ascii_letters + string.digits
     random_name = [random.choice(letter_set) for _ in range(length)]
-    return "".join(random_name)
+    return "user-" + "".join(random_name)
