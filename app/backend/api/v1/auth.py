@@ -13,7 +13,6 @@ router = APIRouter()  # auth 라우터를 위한 api router 선언부
 def signup(user: UserCreate):
     # TODO
     # valid user email
-    # valid = True
 
     valid = EmailValidator(user.email)
 

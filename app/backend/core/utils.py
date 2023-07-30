@@ -117,15 +117,15 @@ def EmailValidator(email):
 
         emailinfo = validate_email(email, check_deliverability=False)
 
-        # After this point, use only the normalized form of the email address,
-        # especially before going to a database query.
-        # email = emailinfo.normalized
-        return emailinfo
+        # 데이터 베이스에 들어가기전 email의 normalizing을 한다.
+
+        email = emailinfo.normalized
+        return True
 
     except EmailNotValidError as e:
         # The exception message is human-readable explanation of why it's
         # not a valid (or deliverable) email address.
-        print(e)
+        print(str(e))
         return False
 
 
