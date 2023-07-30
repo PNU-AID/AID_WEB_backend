@@ -1,4 +1,6 @@
 import logging
+import random
+import string
 
 from bson import ObjectId
 from passlib.context import CryptContext
@@ -106,3 +108,10 @@ def serializer(item) -> dict:
         **{"id": str(item[i]) for i in item if i == "_id"},
         **{i: item[i] for i in item if i != "_id"},
     }
+
+
+# ----- random string -----
+def get_random_name(length: int) -> str:
+    letter_set = string.ascii_letters + string.digits
+    random_name = [random.choice(letter_set) for _ in range(length)]
+    return "".join(random_name)

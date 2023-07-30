@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from backend.core import hasher
+from backend.core.utils import get_random_name
 from backend.database import db_manager
 from backend.scheme import UserCreate
 from fastapi.encoders import jsonable_encoder
@@ -12,6 +13,7 @@ def create_user(user: UserCreate, is_admin=False):
     # hash
     user["password"] = hasher.get_password_hash(user["password"])
 
+    # initialize
     user["created_time"] = datetime.now()
     if is_admin:
         user["is_admin"] = True
@@ -22,7 +24,7 @@ def create_user(user: UserCreate, is_admin=False):
     user["is_active"] = False
     user["submit"] = None
     user["articles"] = []
-    user["nick_name"] = None
+    user["nick_name"] = get_random_name(12)
 
     # inser to db
     db_manager.db.user.insert_one({**user})
