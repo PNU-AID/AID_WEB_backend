@@ -19,6 +19,7 @@ def create_user(user: UserCreate, is_admin=False):
         user["is_admin"] = False
 
     user["is_member"] = False
+    user["is_active"] = False
     user["submit"] = None
     user["articles"] = []
     user["nick_name"] = None
