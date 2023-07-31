@@ -1,5 +1,5 @@
 from backend.crud import create_user
-from backend.scheme import UserCreate, UserLogIn
+from backend.scheme import UserCreate
 from fastapi import APIRouter
 from fastapi.security import OAuth2PasswordBearer
 
@@ -22,7 +22,7 @@ def signup(user: UserCreate):
 
 
 @router.post("/login")
-def login(user: UserLogIn):
+def login(user):
     """login 하는 api
 
     Args:
