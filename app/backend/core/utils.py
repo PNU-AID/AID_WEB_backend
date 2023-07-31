@@ -115,3 +115,8 @@ def get_random_name(length: int) -> str:
     letter_set = string.ascii_letters + string.digits
     random_name = [random.choice(letter_set) for _ in range(length)]
     return "user-" + "".join(random_name)
+
+
+# ----- message -----
+def make_message(message: str) -> dict:
+    return {"message": message}
