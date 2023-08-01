@@ -1,1 +1,1 @@
-from backend.crud.user import create_user  # noqa
+from backend.crud.user import create_user, read_user  # noqa

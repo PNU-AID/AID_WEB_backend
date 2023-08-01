@@ -15,6 +15,7 @@ python-multipart = "*"
 jinja2 = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
+beanie = "*"
 
 [dev-packages]
 pre-commit = "*"

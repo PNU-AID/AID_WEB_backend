@@ -3,7 +3,6 @@ import random
 import string
 
 from bson import ObjectId
-from passlib.context import CryptContext
 
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
 
@@ -90,18 +89,6 @@ class Logger:
         return self.logger_lst.get(logger_name, None)
 
 
-# ----- Hasher -----
-class Hasher:
-    def __init__(self):
-        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-    def verify_password(self, plain_password, hashed_password):
-        return self.pwd_context.verify(plain_password, hashed_password)
-
-    def get_password_hash(self, password):
-        return self.pwd_context.hash(password)
-
-
 # ----- serializer -----
 def serializer(item) -> dict:
     return {
@@ -111,7 +98,12 @@ def serializer(item) -> dict:
 
 
 # ----- random string -----
-def get_random_name(length: int) -> str:
+def get_random_name(length: int = 12) -> str:
     letter_set = string.ascii_letters + string.digits
     random_name = [random.choice(letter_set) for _ in range(length)]
     return "user-" + "".join(random_name)
+
+
+# ----- message -----
+def make_message(message: str) -> dict:
+    return {"message": message}
