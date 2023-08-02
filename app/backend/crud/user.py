@@ -2,7 +2,7 @@ from typing import Union
 
 from backend.core.security import get_password_hash
 from backend.database import db_manager
-from backend.scheme import UserOutDB, UserSignUp
+from backend.scheme.user import UserOutDB, UserSignUp
 from pydantic import EmailStr
 
 

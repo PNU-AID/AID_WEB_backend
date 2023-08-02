@@ -4,8 +4,13 @@ from typing import Union
 from backend.core import settings
 from backend.core.security import create_access_token, verify_password
 from backend.core.utils import make_message
-from backend.crud import create_user, read_user
-from backend.scheme import UserLogIn, UserOut, UserOutDB, UserSignUp
+from backend.crud.user import create_user, read_user
+from backend.scheme.user import (
+    UserLogIn,
+    UserOut,
+    UserOutDB,
+    UserSignUp,
+)
 from fastapi import APIRouter, HTTPException, Response, status
 
 router = APIRouter()  # auth 라우터를 위한 api router 선언부
