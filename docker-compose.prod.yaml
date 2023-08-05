@@ -13,7 +13,7 @@ services:
       TZ: "Asia/Seoul"
 
     volumes:
-      - nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./config/nginx.prod.conf:/etc/nginx/nginx.conf
 
     ports:
       - 80:80

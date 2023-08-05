@@ -22,8 +22,8 @@ jobs:
 
       run: |
         mkdir ./app/env
-        echo "{{ secrets.SERVER_ENV }}" >> ./app/env/.server.env
-        echo "{{ secrets.DB_ENV }}" >> ./config/.db.env
+        echo "${{ secrets.SERVER_ENV }}"" >> ./app/env/.server.env
+        echo "${{ secrets.DB_ENV }}" >> ./config/.db.env
 
     # - name: Docker Metadata action
     #   uses: docker/metadata-action@v4.4.0
@@ -42,6 +42,7 @@ jobs:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_KEY }}
+        overwrite: true
         source: "./config/deploy.sh,./config/nginx.prod.conf,./config/.db.env,docker-compose.prod.yaml"
         target: "/home/ubuntu"
         timeout: 3m
@@ -76,4 +77,4 @@ jobs:
         timeout: 3m
 
         script: |
-          sh deploy.sh
+          sh ./config/deploy.sh
