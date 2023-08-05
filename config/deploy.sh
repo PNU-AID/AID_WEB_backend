@@ -24,7 +24,7 @@
 # fi
 
 echo "start docker-compose up: ubuntu"
-sudo docker compose down
+sudo docker compose -f docker-compose.prod.yaml down
 sudo docker rmi ${{ secrets.DOCKERHUB_ID }}/aid_web
 sudo docker pull ${{ secrets.DOCKERHUB_ID }}/aid_web
 sudo docker compose -f docker-copmose.prod.yaml up -d
