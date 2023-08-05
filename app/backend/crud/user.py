@@ -6,13 +6,7 @@ from backend.scheme.user import UserOutDB, UserSignUp
 from pydantic import EmailStr
 
 
-<<<<<<< HEAD
-def create_user(user: UserCreate, is_admin=False):
-    # json변환
-    user = jsonable_encoder(user)  # parameter로 받은 pydantic 모델을 json형태로 변환
-=======
 def create_user(user: UserSignUp, is_admin=False) -> None:
->>>>>>> 12c726a0e1ea32cb8863c453cad9fa1d70186d7d
     # hash
     hash_password = get_password_hash(user.password)
     user_dict = user.dict()
