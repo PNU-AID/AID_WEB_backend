@@ -22,7 +22,7 @@ jobs:
 
       run: |
         mkdir ./app/env
-        echo "${{ secrets.SERVER_ENV }}"" >> ./app/env/.server.env
+        echo "${{ secrets.SERVER_ENV }}" >> ./app/env/.server.env
         echo "${{ secrets.DB_ENV }}" >> ./config/.db.env
 
     # - name: Docker Metadata action
