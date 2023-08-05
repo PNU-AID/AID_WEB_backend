@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10.9-slim
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY ./Pipfile .
 COPY ./Pipfile.lock .
 
-RUN pip install --upgrade pip && pip install pipenv
+RUN pip install --upgrade pip && pip install pipenv==2023.6.26
 
 RUN pipenv install --system --deploy
 
