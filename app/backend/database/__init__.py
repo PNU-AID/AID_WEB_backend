@@ -1,3 +1,3 @@
-from backend.database.mongodb import db  # noqa
+from backend.database.mongodb import MongoManager  # noqa
 
-__all__ = ["db"]
+db_manager = MongoManager()

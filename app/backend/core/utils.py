@@ -1,9 +1,11 @@
-# FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
+import logging
 import random
-from datetime import datetime
+import string
 
-from backend.database import db
 from bson import ObjectId
+
+# FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
+
 
 # PyObjectId 클래스:
 # MongoDB의 ObjectId를 Python에서 사용하기 쉽도록 Wrapping하여 FastAPI에서 쉽게 사용할 수 있도록 한다.
@@ -65,43 +67,43 @@ class StrObjectId(str):
         return ObjectId(v)
 
 
-# make_message 함수: 문자열 메시지를 인자로 받아서 딕셔너리 형태로 변환하여 반환한다. 이 함수는 테스트 용도로 사용될 수 있다.
-def make_message(message):
+# ----- Logger -----
+class Logger:
+    def __init__(self):
+        self.formatter = logging.Formatter("[%(asctime)s] %(levelname)s %(message)s")
+        self.logger_lst = {}
+
+    def add_logger(self, logger_name, file_name, logging_level=logging.INFO):
+        if self.logger_lst.get(logger_name, 0) != 0:
+            # you can not make same name logger
+            return
+        handler = logging.FileHandler(file_name)
+        handler.setFormatter(self.formatter)
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging_level)
+        logger.addHandler(handler)
+
+        self.logger_lst[logger_name] = logger
+
+    def get_logger(self, logger_name):
+        return self.logger_lst.get(logger_name, None)
+
+
+# ----- serializer -----
+def serializer(item) -> dict:
+    return {
+        **{"id": str(item[i]) for i in item if i == "_id"},
+        **{i: item[i] for i in item if i != "_id"},
+    }
+
+
+# ----- random string -----
+def get_random_name(length: int = 12) -> str:
+    letter_set = string.ascii_letters + string.digits
+    random_name = [random.choice(letter_set) for _ in range(length)]
+    return "user-" + "".join(random_name)
+
+
+# ----- message -----
+def make_message(message: str) -> dict:
     return {"message": message}
-
-
-def make_dummy_submit():
-    dummies = []
-    for i in range(100):
-        tmp = {}
-        email_tail = ["naver.com", "pusan.co.kr", "gmail.com"]
-        p_skill = ["상", "중", "하"]
-        tmp["username"] = f"test_name{random.randint(1, 1000)}"
-        tmp["created_time"] = datetime.now()
-        tmp["email"] = f"test{random.randint(1, 1000)}@{random.choice(email_tail)}"
-        tmp["student_id"] = f"{int(random.random()*1e9)}"
-        tmp["python_skill"] = f"{random.choice(p_skill)}"
-        tmp["motivation"] = "내용"
-        tmp["github"] = f"test{random.randint(1, 1000)}@github.com"
-        tmp["blog"] = f"test{random.randint(1, 1000)}@블로그주소"
-        tmp["ai_subject"] = "없음"
-        tmp["study_want"] = "없음"
-        tmp["project_want"] = "없음"
-        tmp["course"] = "없음"
-        tmp["project_exp"] = "없음"
-        tmp["is_pass"] = False
-        dummies.append(tmp)
-    db["submit"].insert_many(dummies)
-
-
-def delete_dummy_submit():
-    query = {"project_exp": "없음"}
-    db["submit"].delete_many(query)
-
-
-def make_super_user():
-    db["user"].insert_one({"username": "admin", "password": "qwer1234"})
-
-
-def delete_super_user():
-    db["user"].delete_one({"username": "admin"})

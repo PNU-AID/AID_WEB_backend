@@ -1,25 +1,27 @@
-from backend.database import db
+from backend.database import db_manager
+from backend.scheme.submit import SubmitForm
 from bson import ObjectId
 
 
-def create_submit(data: dict):
-    db["submit"].insert_one(data)
+def create_submit(submit_data: SubmitForm) -> str:
+    submit_input = db_manager.db.submit.insert_one(submit_data.dict())
+    return str(submit_input.inserted_id)
+
+
+def read_submit(submit_id: str) -> dict:
+    submit = db_manager.db.submit.find_one({"_id": ObjectId(submit_id)})
+    return submit
+
+
+def update_submit(submit_id: str, submit_data: SubmitForm):
+    db_manager.db.submit.update_one({"_id": ObjectId(submit_id)}, {"$set": submit_data.dict()})
+
+
+def delete_submit(submit_id: str):
+    # TODO
+    # make this part
+    pass
 
 
 def read_all_submit():
-    return db["submit"].find()
-
-
-def get_count():
-    return db["submit"].count_documents({})
-
-
-def read_submit(_id: str):
-    return db["submit"].find_one({"_id": ObjectId(_id)})
-
-
-def update_is_pass(_id: str, is_pass: bool):
-    query = {"_id": ObjectId(_id)}
-    new_value = {"$set": {"is_pass": is_pass}}
-
-    db["submit"].update_one(query, new_value)
+    pass

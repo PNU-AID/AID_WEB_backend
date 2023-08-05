@@ -1,3 +1,5 @@
-from backend.core.settings import settings  # noqa
+from backend.core.settings import Settings  # noqa
+from backend.core.utils import Logger
 
-__all__ = ["settings"]
+settings = Settings()
+logger = Logger()

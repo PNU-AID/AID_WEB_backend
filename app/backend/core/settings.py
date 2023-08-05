@@ -8,11 +8,21 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     PROJECT_NAME: str = "AID_WEB"
     PROJECT_VERSION: str = "0.1.0"
 
+    # auth
+    SECRET_KEY: str
+    REFRESH_SECRET_KEY: str
+
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
+
+    # db
     mongo_user: str
     mongo_password: str
     mongo_host: str
     mongo_port: str
 
+    # email
     email_id: str
     email_pw: str
 
@@ -22,6 +32,3 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     class Confing:
         env_file = "./env/.server.env"
         env_file_encoding = "utf-8"
-
-
-settings = Settings()
