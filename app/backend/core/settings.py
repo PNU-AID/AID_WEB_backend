@@ -13,8 +13,8 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     REFRESH_SECRET_KEY: str
 
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30
-    REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
     # db
     mongo_user: str
