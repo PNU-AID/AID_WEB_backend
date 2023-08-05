@@ -22,3 +22,7 @@
 - comment: 주석 추가
 - test: 테스트 코드 추가
 - chore: 빌드 관련 파일 수정, 패키지 추가 및 수정
+
+## Python Code Style
+- 함수명, 변수명 : snake case
+- 클래스명 : Pascal case
