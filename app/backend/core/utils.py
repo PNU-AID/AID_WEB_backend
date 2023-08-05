@@ -3,8 +3,6 @@ import random
 import string
 
 from bson import ObjectId
-from email_validator import EmailNotValidError, validate_email
-from passlib.context import CryptContext
 
 # FastAPI에서 사용할 유틸리티 함수들을 정의하는 모듈인 utils.py
 
@@ -91,18 +89,6 @@ class Logger:
         return self.logger_lst.get(logger_name, None)
 
 
-# ----- Hasher -----
-class Hasher:
-    def __init__(self):
-        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-    def verify_password(self, plain_password, hashed_password):
-        return self.pwd_context.verify(plain_password, hashed_password)
-
-    def get_password_hash(self, password):
-        return self.pwd_context.hash(password)
-
-
 # ----- serializer -----
 def serializer(item) -> dict:
     return {
@@ -111,26 +97,13 @@ def serializer(item) -> dict:
     }
 
 
-def EmailValidator(email):
-    try:
-        # email주소가 valid한지 확인한다. 처음 sign up할때만 deliverablity(정상적으로 수신자에게 도달하는 능력)가 true로 설정해야함.
-
-        emailinfo = validate_email(email, check_deliverability=False)
-
-        # 데이터 베이스에 들어가기전 email의 normalizing을 한다.
-
-        email = emailinfo.normalized
-        return True
-
-    except EmailNotValidError as e:
-        # The exception message is human-readable explanation of why it's
-        # not a valid (or deliverable) email address.
-        print(str(e))
-        return False
-
-
 # ----- random string -----
-def get_random_name(length: int) -> str:
+def get_random_name(length: int = 12) -> str:
     letter_set = string.ascii_letters + string.digits
     random_name = [random.choice(letter_set) for _ in range(length)]
     return "user-" + "".join(random_name)
+
+
+# ----- message -----
+def make_message(message: str) -> dict:
+    return {"message": message}

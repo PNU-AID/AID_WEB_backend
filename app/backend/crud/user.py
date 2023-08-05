@@ -1,41 +1,34 @@
-from datetime import datetime
+from typing import Union
 
-from backend.core import hasher
-from backend.core.utils import get_random_name
+from backend.core.security import get_password_hash
 from backend.database import db_manager
-from backend.scheme import UserCreate
-from fastapi.encoders import jsonable_encoder
+from backend.scheme.user import UserOutDB, UserSignUp
+from pydantic import EmailStr
 
 
-def create_user(user: UserCreate, is_admin=False):
-    # json변환
-    user = jsonable_encoder(user)  # parameter로 받은 pydantic 모델을 json형태로 변환
+def create_user(user: UserSignUp, is_admin=False) -> None:
     # hash
-    user["password"] = hasher.get_password_hash(user["password"])
-
-    # initialize
-    user["created_time"] = datetime.now()
+    hash_password = get_password_hash(user.password)
+    user_dict = user.dict()
+    del user_dict["password"]
     if is_admin:
-        user["is_admin"] = True
+        user_dict["is_admin"] = True
     else:
-        user["is_admin"] = False
-
-    user["is_member"] = False
-    user["is_active"] = False
-    user["submit"] = None
-    user["articles"] = []
-    user["nick_name"] = get_random_name(12)
-
+        user_dict["is_admin"] = False
+    user_dict["hash_password"] = hash_password
     # inser to db
-    db_manager.db.user.insert_one({**user})
+    db_manager.db.user.insert_one(user_dict)
 
 
 def read_all_user():
     pass
 
 
-def read_user(nick_name: str):
-    db_manager.db.user.find_one({"nick_name": nick_name})
+def read_user(email: EmailStr) -> Union[UserOutDB, None]:
+    user_info = db_manager.db.user.find_one({"email": email})
+    if user_info is None:
+        return None
+    return UserOutDB(**user_info)
 
 
 def read_all_is_pass_email(is_pass: bool):
