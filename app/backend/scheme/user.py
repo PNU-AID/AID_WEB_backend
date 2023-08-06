@@ -21,7 +21,7 @@ class UserSignUp(UserBase):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        schema_extra = {"example": {"email": "test@example.com", "password": "password"}}
+        json_schema_extra = {"example": {"email": "test@example.com", "password": "password"}}
 
 
 class UserLogIn(UserBase):
@@ -31,7 +31,7 @@ class UserLogIn(UserBase):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        schema_extra = {"example": {"email": "test@example.com", "password": "password"}}
+        json_schema_extra = {"example": {"email": "test@example.com", "password": "password"}}
 
 
 class UserInDB(UserBase):
@@ -57,6 +57,9 @@ class UserOutDB(UserBase):
     submit: dict
     articles: list
     nick_name: str
+
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class UserOut(UserBase):
