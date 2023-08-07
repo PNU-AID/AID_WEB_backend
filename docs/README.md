@@ -2,7 +2,7 @@
 # 시스템 개요
 
 ## v0
-![](./img/system.png)
+![](./img/aid_v0_system.png)
 
 ## 화면
 <p align=center>
@@ -16,7 +16,7 @@
 
 
 ## v1
-![](./img/aid_v1.png)
+![](./img/aid_v1_system.png)
 
 ---
 
