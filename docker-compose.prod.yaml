@@ -38,6 +38,9 @@ services:
     environment:
       TZ: "Asia/Seoul"
 
+    env_file:
+      - ./config/.server.env
+
     networks:
       - aid
 
@@ -58,8 +61,8 @@ services:
     ports:
       - 27017:27017
 
-    environment:
-      - .db.env
+    env_file:
+      - ./config/.db.env
 
     networks:
       - aid
