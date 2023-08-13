@@ -96,6 +96,7 @@ def serializer(item) -> dict:
         **{i: item[i] for i in item if i != "_id"},
     }
 
+
 # ----- random string -----
 def get_random_name(length: int = 12) -> str:
     letter_set = string.ascii_letters + string.digits
