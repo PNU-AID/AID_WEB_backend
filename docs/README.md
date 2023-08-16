@@ -31,6 +31,8 @@ backend/env/.server.env
     mongo_port=27017
     SECRET_KEY=***
     REFRESH_SECRET_KEY=***
+    ADMIN_NAME=***
+    ADMIN_PWD=***
     email_id=***
     email_pw=***(앱 비밀번호)
 

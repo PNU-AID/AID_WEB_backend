@@ -44,6 +44,9 @@ services:
     environment:
       TZ: "Asia/Seoul"
 
+    env_file:
+      - ./env/.server.env
+
     networks:
       - aid
 
@@ -64,7 +67,7 @@ services:
       - 27017
 
     env_file:
-      - ./app/env/.db.env
+      - ./env/.db.env
 
     networks:
       - aid
