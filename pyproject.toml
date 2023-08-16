@@ -2,12 +2,16 @@
 pythonpath = [
     "./app/backend",
     "./app",
-    "."
+    ".",
 ]
 
 env = [
     "mongo_user=admin_user",
     "mongo_password=password",
     "mongo_host=localhost",
-    "mongo_port=27017"
+    "mongo_port=27017",
+    "email_id=test",
+    "email_pw=1234",
+    "SECRET_KEY=asdf",
+    "REFRESH_SECRET_KEY=asdf"
 ]
