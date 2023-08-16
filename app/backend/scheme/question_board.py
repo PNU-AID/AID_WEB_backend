@@ -26,6 +26,7 @@ class QuestionOut(QuestionBase):
 
 class CommentIn(BaseModel):
     question_id: StrObjectId = Field(...)
+    created_time: datetime = Field(default_factory=datetime.now)
     content: str = Field(...)
 
     class Config:
