@@ -20,7 +20,7 @@ def update_submit(submit_id: str, submit_data: SubmitForm):
 def delete_submit(submit_id: str):
     # TODO
     # make this part
-    pass
+    db_manager.db.submit.delete_one({"_id": ObjectId(submit_id)})
 
 
 def read_all_submit():

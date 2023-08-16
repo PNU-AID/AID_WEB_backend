@@ -1,5 +1,6 @@
 from backend.crud.submit import (
     create_submit,
+    delete_submit,
     read_submit,
     update_submit,
 )
@@ -51,5 +52,5 @@ def modify_my_submit(submit_id: str, submission: SubmitForm):
 
 
 @router.delete("/cancle")
-def cancel_submit():
-    pass
+def cancel_submit(submit_id: str):
+    delete_submit(submit_id)
