@@ -59,7 +59,7 @@ services:
       - 27017
 
     ports:
-      - 27017:27017
+      - 30017:27017
 
     env_file:
       - ./config/.db.env
