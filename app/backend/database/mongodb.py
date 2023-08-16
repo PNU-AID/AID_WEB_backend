@@ -6,6 +6,9 @@ from pymongo.database import Database
 # PyMongo 모듈의 MongoClient 클래스를 사용하여 MongoDB 서버에 연결
 # MongoClient: MongoDB 서버에 연결하기 위한 인증 정보와 호스트 및 포트 정보를 인자로 받는다.
 
+# username, password에 특수문자 사용하는 방법
+# https://stackoverflow.com/questions/39237813/how-to-escape-in-a-password-in-pymongo-connection
+
 
 class MongoManager:
     def __init__(self):

@@ -1,34 +1,32 @@
 from datetime import datetime
 
-from backend.core.utils import StrObjectId
 from pydantic import BaseModel, Field
-
-# 위 코드는 Pydantic을 사용하여 MongoDB에서 사용될 "User 데이터 모델과 관련된 클래스"들을 정의하고 있다.
 
 
 class QuestionBase(BaseModel):
     title: str = Field(...)
     content: str = Field(...)
-    comments: list = []
 
 
 class QuestionIn(QuestionBase):
-    created_time: datetime = Field(default_factory=datetime.now)
+    pass
+
+
+class QuestionInDB(QuestionBase):
+    created_time: datetime
+    comment_ids: list
 
 
 class QuestionOut(QuestionBase):
-    # TODO
-    # id:ObjectIdStr = Field(alias="_id")
     created_time: datetime
-
-    class Config:
-        arbitrary_types_allowed = True
+    content: str
+    comments: list
 
 
 class CommentIn(BaseModel):
-    question_id: StrObjectId = Field(...)
-    created_time: datetime = Field(default_factory=datetime.now)
+    question_id: str = Field(...)
     content: str = Field(...)
 
-    class Config:
-        arbitrary_types_allowed = True
+
+class CommentInDB(BaseModel):
+    created_time: datetime
