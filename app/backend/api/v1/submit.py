@@ -53,4 +53,9 @@ def modify_my_submit(submit_id: str, submission: SubmitForm):
 
 @router.delete("/cancle")
 def cancel_submit(submit_id: str):
+    """지원서 삭제하는 api<br/>
+
+    Args:
+    - submit_id (str)
+    """
     delete_submit(submit_id)
