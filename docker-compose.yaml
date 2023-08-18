@@ -61,7 +61,7 @@ services:
       - data-vol:/data/db
 
     ports:
-      - 27017:27017
+      - 30017:27017
 
     expose:
       - 27017
