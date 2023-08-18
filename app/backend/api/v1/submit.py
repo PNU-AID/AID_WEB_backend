@@ -37,9 +37,16 @@ def get_my_submit(submit_id: str):
     Returns:
     - (SubmitForm)
     """
-    submit = read_submit(submit_id)
+
+    try:
+        submit = read_submit(submit_id)
+    except Exception:
+        # ObjectId must be a 12-byte input or a 24-character hex string
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="ID is not found")
+
     if submit is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="ID is not found")
+
     return submit
 
 
