@@ -88,6 +88,12 @@ class Logger:
     def get_logger(self, logger_name):
         return self.logger_lst.get(logger_name, None)
 
+    def info(self, logger_name, messege):
+        try:
+            self.logger_lst[logger_name].info(messege)
+        except KeyError:
+            raise KeyError()
+
 
 # ----- serializer -----
 def serializer(item) -> dict:
