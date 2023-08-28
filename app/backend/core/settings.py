@@ -32,6 +32,6 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     # TODO
     # prod, dev env 분리 할 것
 
-    class Confing:
+    class Config:
         env_file = "./env/.server.env"
         env_file_encoding = "utf-8"
