@@ -28,12 +28,12 @@ app.add_middleware(
 app.include_router(api_router, prefix="/api")
 
 
-@app.get("/docs", include_in_schema=False)
+@app.get("/api/docs", include_in_schema=False)
 async def get_documentation(admin: str = Depends(get_admin)):
-    return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
+    return get_swagger_ui_html(openapi_url="/api/openapi.json", title="docs")
 
 
-@app.get("/openapi.json", include_in_schema=False)
+@app.get("/api/openapi.json", include_in_schema=False)
 async def openapi(admin: str = Depends(get_admin)):
     return get_openapi(title=app.title, version=app.version, routes=app.routes)
 
