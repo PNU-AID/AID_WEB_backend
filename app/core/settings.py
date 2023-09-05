@@ -24,6 +24,7 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     mongo_password: str
     mongo_host: str
     mongo_port: str
+    mongo_db_name: str
 
     # email
     email_id: str

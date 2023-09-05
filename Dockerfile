@@ -4,11 +4,10 @@ WORKDIR /app
 
 # COPY ./app .
 
-COPY ./Pipfile .
-COPY ./Pipfile.lock .
+COPY ./pyproject.toml ./poetry.lock ./
 
-RUN pip install --upgrade pip && pip install pipenv
-
-RUN pipenv install --system --deploy
+# Docker layer cache 최적화 하기
+RUN pip install poetry && poetry config virtualenvs.create false
+RUN poetry install
 
 # CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,15 +1,13 @@
-import secrets
 from datetime import datetime, timedelta
-from typing import Annotated, Union
+from typing import Union
 
-from backend.core import settings
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from jose import jwt
 from passlib.context import CryptContext
 
+from app.core import settings
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-security = HTTPBasic()
+# security = HTTPBasic()
 
 
 def verify_password(plain_password, hashed_password):
@@ -40,15 +38,3 @@ def create_refresh_token(data: dict, expires_delta: Union[timedelta, None] = Non
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.REFRESH_SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
-
-
-def get_admin(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
-    correct_username = secrets.compare_digest(credentials.username, settings.ADMIN_NAME)
-    correct_password = secrets.compare_digest(credentials.password, settings.ADMIN_PWD)
-    if not (correct_username and correct_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return ""
