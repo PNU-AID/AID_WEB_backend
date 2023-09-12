@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Cookie, HTTPException, Response, status
+from fastapi.responses import JSONResponse
 
 from app.core import settings
 from app.core.security import (
@@ -44,7 +45,7 @@ async def create_user(user_auth: UserAuth):
     return user
 
 
-@router.post("/login", response_model=UserOut)
+@router.post("/login")
 async def login(response: Response, user_auth: UserAuth):
     user = await authentication_user(user_auth)
     if not user:
@@ -60,10 +61,10 @@ async def login(response: Response, user_auth: UserAuth):
     refresh_token_expire = timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
     refresh_token = create_refresh_token(data={"sub": user.email}, expires_delta=refresh_token_expire)
 
-    response.set_cookie(key="access_token", value=access_token, httponly=True)
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
 
-    return user
+    header = {"Authorization": f"Bearer {access_token}"}
+    return JSONResponse(content={"status": "success"}, headers=header)
 
 
 @router.get("/token")
