@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from fastapi import APIRouter, Cookie, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, Response, status
 from fastapi.responses import JSONResponse
 
 from app.core import settings
@@ -19,7 +19,7 @@ async def authentication_user(user_auth: UserAuth):
     """
     valid check user
 
-    return User or None
+    return User or False
     """
     user = await User.find_one(User.email == user_auth.email)
     if user is None:
@@ -64,14 +64,6 @@ async def login(response: Response, user_auth: UserAuth):
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
 
     header = {"Authorization": f"Bearer {access_token}"}
-    return JSONResponse(content={"status": "success"}, headers=header)
-
-
-@router.get("/token")
-def read_user_me(access_token: str | None = Cookie(default=None), refresh_token: str | None = Cookie(default=None)):
-    # 변수 이름이 토큰 값과 같아야 값을 가져옴
-    # Postman, swagger docs 에서 cookie param 넣어도 None으로 뜬다(보안상의 이유로 추측됨)
-
     # TODO
-    # 토큰 검사 후 리턴
-    return None
+    # content 수정
+    return JSONResponse(content={"status": "success"}, headers=header)
