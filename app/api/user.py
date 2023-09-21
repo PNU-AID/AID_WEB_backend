@@ -1,20 +1,23 @@
 from fastapi import APIRouter, Depends
+from fastapi.responses import Response
 
-from app.core.security import verify_token
+from app.core.security import get_current_user
+from app.schemas.user import UserOut
 
 router = APIRouter()
 
 
-@router.get("/me")
-def read_user(tmp=Depends(verify_token)):
-    # Cookie와 마찬가지로 header명과 같은 변수명을 입력해야 함
+@router.get("/me", response_model=UserOut)
+def read_user(response: Response, user_and_token: dict = Depends(get_current_user)):
     # TODO
-    # get access token in bearer header
-    # check the token
     # if expired get refresh token return new access token
     # return user info
-    print(tmp)
-    return None
+    user = user_and_token["user"]
+    access_token = user_and_token["token"]
+
+    response.headers["Authorization"] = f"Bearer {access_token}"
+
+    return user
 
 
 @router.put("/update")
