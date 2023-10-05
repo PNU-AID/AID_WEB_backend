@@ -10,6 +10,11 @@ class UserBase(BaseModel):
     email: EmailStr
 
 
+class UserUpdate(BaseModel):
+    nick_name: str
+    submission: Optional[SubmitForm]
+
+
 class UserAuth(UserBase):
     password: str
 
