@@ -10,7 +10,7 @@ from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core import settings
-from app.crud.user import get_user_by_email
+from app.crud.user import read_user_in_db
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 get_bearer_token = HTTPBearer(auto_error=False)
@@ -37,11 +37,11 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
 
 def create_refresh_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
+    # if expires_delta:
+    #     expire = datetime.utcnow() + expires_delta
+    # else:
+    #     expire = datetime.utcnow() + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES)
+    # to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.REFRESH_SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
@@ -61,11 +61,15 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    access_token_refresh = False
+    access_token = None
+
     try:
         payload = jwt.decode(access_token, settings.SECRET_KEY, settings.ALGORITHM)
     except ExpiredSignatureError:
         # 시간 만료 에러
         print("expire")
+        access_token_refresh = True
         if refresh_token is None:
             raise credential_err
         payload = jwt.decode(refresh_token, settings.REFRESH_SECRET_KEY, settings.ALGORITHM)
@@ -78,10 +82,12 @@ async def get_current_user(
     if email is None:
         raise credential_err
 
-    user = await get_user_by_email(email)
+    user = await read_user_in_db(email)
     if user is None:
         raise credential_err
 
-    access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expire)
+    if access_token_refresh:
+        access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expire)
+
     return {"user": user, "token": access_token}
