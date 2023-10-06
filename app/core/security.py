@@ -10,7 +10,7 @@ from jose import ExpiredSignatureError, JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core import settings
-from app.crud.user import read_user_in_db
+from app.schemas.auth import Token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 get_bearer_token = HTTPBearer(auto_error=False)
@@ -46,30 +46,37 @@ def create_refresh_token(data: dict, expires_delta: Union[timedelta, None] = Non
     return encoded_jwt
 
 
-def get_access_token(auth: Annotated[HTTPAuthorizationCredentials, Depends(get_bearer_token)]) -> str:
+def get_access_token_header(auth: Annotated[HTTPAuthorizationCredentials, Depends(get_bearer_token)]):
     if auth is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Bearer token is missing or unknown")
-    token = auth.credentials
-    return token
+    else:
+        access_token = auth.credentials
+        try:
+            payload = jwt.decode(access_token, settings.SECRET_KEY, settings.ALGORITHM)
+            if payload.get("sub") is None:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED, detail="Bearer token is missing or unknown"
+                )
+        except ExpiredSignatureError:
+            pass
+        except JWTError:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Bearer token is missing or unknown")
 
 
-async def get_current_user(
-    refresh_token: Annotated[Union[str, None], Cookie()], access_token: Annotated[str, Depends(get_access_token)]
-):
+async def get_token(
+    refresh_token: Annotated[Union[str, None], Cookie()],
+    auth: Annotated[HTTPAuthorizationCredentials, Depends(get_bearer_token)],
+) -> Token:
     credential_err = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    access_token_refresh = False
-    access_token = None
-
+    access_token = auth.credentials
     try:
         payload = jwt.decode(access_token, settings.SECRET_KEY, settings.ALGORITHM)
     except ExpiredSignatureError:
         # 시간 만료 에러
-        print("expire")
-        access_token_refresh = True
         if refresh_token is None:
             raise credential_err
         payload = jwt.decode(refresh_token, settings.REFRESH_SECRET_KEY, settings.ALGORITHM)
@@ -82,12 +89,9 @@ async def get_current_user(
     if email is None:
         raise credential_err
 
-    user = await read_user_in_db(email)
-    if user is None:
-        raise credential_err
+    access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": email}, expires_delta=access_token_expire)
 
-    if access_token_refresh:
-        access_token_expire = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expire)
-
-    return {"user": user, "token": access_token}
+    # pydantic BaseModel class용도로 사용하는 경우 반드시 키워드 인자값으로 사용해야 함
+    token = Token(email=email, access_token=access_token)
+    return token

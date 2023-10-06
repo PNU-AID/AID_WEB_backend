@@ -10,15 +10,15 @@ class UserBase(BaseModel):
     email: EmailStr
 
 
+class UserUpdate(BaseModel):
+    nick_name: str
+    submission: Optional[SubmitForm]
+
+
 class UserAuth(UserBase):
     password: str
 
     model_config = {"json_schema_extra": {"examples": [{"email": "test@test.com", "password": "qwer1234"}]}}
-
-
-class UserUpdate(UserBase):
-    nick_name: str
-    submission: Optional[SubmitForm]
 
 
 class UserOut(UserBase):

@@ -1,20 +1,36 @@
+from beanie.exceptions import DocumentNotFound
 from pydantic import EmailStr
 
 from app.models.user import User
 from app.schemas.user import UserUpdate
 
 
-async def read_user_in_db(email: EmailStr) -> User:
+async def get_user_by_email(email: EmailStr) -> User | None:
     """Get User by Email"""
     return await User.find_one(User.email == email)
 
 
-async def create_user_in_db(email: EmailStr, password: str):
-    user = User(email=email, password=password)
-    await user.create()
+async def update_user(new_user: UserUpdate, email: EmailStr) -> User | None:
+    """Update User"""
+    user = await User.find_one(User.email == email)
+    if user is None:
+        return None
+    # TODO
+    # for 문으로 수정 필요
+    user.nick_name = new_user.nick_name
+    user.submission = new_user.submission
+    # try 쓸 필요 있나?
+    try:
+        await user.replace()
+    except (ValueError, DocumentNotFound):
+        print("Can't replace a non existing document")
     return user
 
 
-async def update_user_in_db(user_update: UserUpdate):
-    user = await User.find_one(User.email == user_update.email)
-    user.nick_name = user_update.nick_name
+async def delete_user(email: EmailStr) -> User | None:
+    """Delete User"""
+    user = await User.find_one(User.email == email)
+    if user is None:
+        return None
+    await user.delete()
+    return user
