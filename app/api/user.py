@@ -6,12 +6,12 @@ from app.schemas.user import UserOut
 
 router = APIRouter()
 
+# TODO
+# middleware 추가
 
-@router.get("/me", response_model=UserOut)
+
+@router.get("/read", response_model=UserOut)
 def read_user(response: Response, user_and_token: dict = Depends(get_current_user)):
-    # TODO
-    # if expired get refresh token return new access token
-    # return user info
     user = user_and_token["user"]
     access_token = user_and_token["token"]
 

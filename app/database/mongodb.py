@@ -15,7 +15,6 @@ async def initiate_database():
         f"{settings.mongo_host}:"
         f"{settings.mongo_port}/?authMechanism=DEFAULT"
     )
-
     client = AsyncIOMotorClient(uri)
     await init_beanie(
         database=client[settings.mongo_db_name],
