@@ -41,7 +41,7 @@ async def create_user(user_auth: UserAuth):
     # email validation
 
     hashed_pwd = get_password_hash(user_auth.password)
-    user = create_user_in_db(email=user_auth.email, password=hashed_pwd)
+    user = await create_user_in_db(email=user_auth.email, password=hashed_pwd)
     return user
 
 
