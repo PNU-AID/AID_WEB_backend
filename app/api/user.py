@@ -8,6 +8,9 @@ from app.schemas.user import UserOut, UserUpdate
 
 router = APIRouter(dependencies=[Depends(get_access_token_header)])
 
+# TODO
+# middleware 추가
+
 
 @router.get("/me", response_model=UserOut)
 async def read_user_api(response: Response, token: Token = Depends(get_token)):
