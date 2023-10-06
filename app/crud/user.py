@@ -5,7 +5,16 @@ from app.models.user import User
 from app.schemas.user import UserUpdate
 
 
-async def get_user_by_email(email: EmailStr) -> User | None:
+async def create_user_in_db(email: EmailStr, password: str):
+    """Create User"""
+    user = User(email=email, password=password)
+
+    await user.create()
+
+    return user
+
+
+async def read_user_in_db(email: EmailStr) -> User | None:
     """Get User by Email"""
     return await User.find_one(User.email == email)
 

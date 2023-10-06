@@ -2,21 +2,18 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse, Response
 
 from app.core.security import get_access_token_header, get_token
-from app.crud.user import delete_user, get_user_by_email, update_user
+from app.crud.user import delete_user, read_user_in_db, update_user
 from app.schemas.auth import Token
 from app.schemas.user import UserOut, UserUpdate
 
 router = APIRouter(dependencies=[Depends(get_access_token_header)])
-
-# TODO
-# middleware 추가
 
 
 @router.get("/me", response_model=UserOut)
 async def read_user_api(response: Response, token: Token = Depends(get_token)):
     user_email = token.email
     access_token = token.access_token
-    user = await get_user_by_email(user_email)
+    user = await read_user_in_db(user_email)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
