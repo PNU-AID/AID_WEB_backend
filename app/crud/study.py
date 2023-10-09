@@ -10,3 +10,10 @@ async def create_study_in_db(title, content, owner: User, max_participants: int,
     await study.create()
 
     return study
+
+
+async def get_study_paginate(page: int, limit: int):
+    start_idx = (page - 1) * limit
+    content = await Study.find().limit(limit).skip(start_idx).to_list()
+
+    return content
