@@ -32,6 +32,6 @@ async def create_study(study_infos: StudyBase, token: Token = Depends(get_token)
 
 @router.get("/list")
 async def get_study_list(page: int = 1, limit: int = 10):
-    studies = get_study_paginate(page, limit)
+    studies = await get_study_paginate(page, limit)
 
     return studies
