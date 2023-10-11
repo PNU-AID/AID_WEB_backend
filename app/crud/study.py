@@ -23,3 +23,9 @@ async def get_study_by_id(study_id: str):
     content = await Study.get(study_id)
 
     return content
+
+
+async def get_owner_from_study(study: Study):
+    await study.fetch_link(Study.owner)
+
+    return study.owner
