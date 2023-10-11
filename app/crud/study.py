@@ -17,3 +17,9 @@ async def get_study_paginate(page: int, limit: int):
     content = await Study.find().limit(limit).skip(start_idx).to_list()
 
     return content
+
+
+async def get_study_by_id(study_id: str):
+    content = await Study.get(study_id)
+
+    return content
