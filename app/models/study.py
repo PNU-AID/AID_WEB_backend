@@ -33,8 +33,8 @@ class Study(Document):
     owner: Link[User]
     title: str
     content: str
-    participants: List[Link[User]] = []
-    participants_wait: List[Link[User]] = []
+    participants: List[Link[User]] = Field(unique=True, default=[])
+    participants_wait: List[Link[User]] = Field(unique=True, default=[])
     comments: Optional[List[CommentForm]] = None
     max_participants: int = Field(gt=1)
     cur_participants: int = 0

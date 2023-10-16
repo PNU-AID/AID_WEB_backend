@@ -29,3 +29,7 @@ async def get_owner_from_study(study: Study):
     await study.fetch_link(Study.owner)
 
     return study.owner
+
+
+async def is_participants_left(study: Study):
+    return study.cur_participants < study.max_participants
