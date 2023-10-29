@@ -33,3 +33,10 @@ async def get_owner_from_study(study: Study):
 
 async def is_participants_left(study: Study):
     return study.cur_participants < study.max_participants
+
+
+async def move_waiter_to_participants(study: Study, user: User):
+    study.participants_wait.remove(user)
+    study.participants.append(user)
+    study.cur_participants = len(study.participants)
+    await study.replace()

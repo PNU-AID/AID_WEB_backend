@@ -8,6 +8,7 @@ from app.crud.study import (
     get_study_by_id,
     get_study_paginate,
     is_participants_left,
+    move_waiter_to_participants,
 )
 from app.crud.user import read_user_in_db
 from app.schemas.auth import Token
@@ -20,18 +21,16 @@ router = APIRouter()
 async def create_study(study_infos: StudyBase, token: Token = Depends(get_token)):
     user_email = token.email
     user = await read_user_in_db(user_email)
-    print(user)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
-    study_obj = await create_study_in_db(
+    await create_study_in_db(
         study_infos.title,
         study_infos.content,
         user,
         max_participants=study_infos.max_participants,
         expire_time=study_infos.expire_date,
     )
-    print(str(study_obj))
 
     return JSONResponse(content={"status": "success"})
 
@@ -52,11 +51,11 @@ async def delete_study(study_id: str, token: Token = Depends(get_token)):
     user = await read_user_in_db(user_email)
 
     if study is None:
-        raise HTTPException(status_code=400, detail="Could not find study with given id")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
     if user_email != study_owner.email:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not owner of this study")
 
     await study.delete()
     return JSONResponse(content={"status": "success"})
@@ -84,15 +83,13 @@ async def join_study(study_id: str, token: Token = Depends(get_token)):
     await study.fetch_all_links()
 
     if study is None:
-        raise HTTPException(status_code=400, detail="Could not find study with given id")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
-    # if not await is_participants_left(study):
-    #     raise HTTPException(status_code=400, detail="No more participants can join this study")
     if user in study.participants:
-        raise HTTPException(status_code=400, detail="User already joined this study")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User already joined this study")
     if user in study.participants_wait:
-        raise HTTPException(status_code=400, detail="User already waiting to join this study")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User already waiting to join this study")
 
     study.participants_wait.append(user)
     await study.replace()
@@ -101,8 +98,6 @@ async def join_study(study_id: str, token: Token = Depends(get_token)):
 
 @router.patch("/approve/{study_id}")
 async def approve_waiting_user(study_id: str, user_email: str, token: Token = Depends(get_token)):
-    # TODO
-    # user_email body로 받기
     study = await get_study_by_id(study_id)
     study_owner = await get_owner_from_study(study)
     user = await read_user_in_db(user_email)
@@ -110,7 +105,7 @@ async def approve_waiting_user(study_id: str, user_email: str, token: Token = De
     await study.fetch_all_links()
 
     if study is None:
-        raise HTTPException(status_code=400, detail="Could not find study with given id")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
     if not await is_participants_left(study):
@@ -118,10 +113,7 @@ async def approve_waiting_user(study_id: str, user_email: str, token: Token = De
     if token.email != study_owner.email:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     if user not in study.participants_wait:
-        raise HTTPException(status_code=400, detail="User is not waiting to join this study")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not waiting to join this study")
 
-    study.participants_wait.remove(user)
-    study.participants.append(user)
-    study.cur_participants = len(study.participants)
-    await study.replace()
+    move_waiter_to_participants(study, user)
     return JSONResponse(content={"status": "success"})
