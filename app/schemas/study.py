@@ -12,7 +12,18 @@ class StudyBase(BaseModel):
     max_participants: int
     expire_date: datetime
 
-    model_config = {"json_schema_extra": {"examples": [{"title": "test_title", "content": "test_content"}]}}
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "title": "test_title",
+                    "content": "test_content",
+                    "max_participants": 10,
+                    "expire_date": str(datetime.now()),
+                }
+            ]
+        }
+    }
 
 
 class StudyUpdate(BaseModel):
