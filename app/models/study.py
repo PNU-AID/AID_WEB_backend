@@ -53,7 +53,6 @@ class Study(Document):
     async def create(self, *args, **kwargs):
         self.participants.append(self.owner)
         self.cur_participants = len(self.participants)
-        self._validate_after_creation = True
         await super().create(*args, **kwargs)
 
     class Settings:
