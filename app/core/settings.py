@@ -16,7 +16,7 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     ADMIN_PWD: str
 
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
 
     # db
@@ -24,6 +24,7 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     mongo_password: str
     mongo_host: str
     mongo_port: str
+    mongo_db_name: str
 
     # email
     email_id: str
@@ -32,6 +33,6 @@ class Settings(BaseSettings):  # mongodb 의 세팅을 저장하는 클래스(.\
     # TODO
     # prod, dev env 분리 할 것
 
-    class Confing:
+    class Config:
         env_file = "./env/.server.env"
         env_file_encoding = "utf-8"

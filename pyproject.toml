@@ -1,17 +1,28 @@
-[tool.pytest.ini_options]
-pythonpath = [
-    "./app/backend",
-    "./app",
-    ".",
-]
+[tool.poetry]
+name = "aid-web"
+version = "0.1.0"
+description = ""
+authors = ["sihyeong671 <bshlab671@naver.com>"]
+readme = "README.md"
 
-env = [
-    "mongo_user=admin_user",
-    "mongo_password=password",
-    "mongo_host=localhost",
-    "mongo_port=27017",
-    "email_id=test",
-    "email_pw=1234",
-    "SECRET_KEY=asdf",
-    "REFRESH_SECRET_KEY=asdf"
-]
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+fastapi = "^0.103.0"
+motor = "^3.3.1"
+python-dotenv = "^1.0.0"
+pydantic = {extras = ["email"], version = "^2.3.0"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+pydantic-settings = "^2.0.3"
+beanie = "^1.21.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.3"
+httpx = "^0.24.1"
+pytest = "^7.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
