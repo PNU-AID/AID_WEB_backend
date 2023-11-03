@@ -3,7 +3,7 @@ from datetime import datetime
 from beanie import PydanticObjectId
 from pydantic import BaseModel
 
-from ..models.study import statusEnum
+from app.models.study import statusEnum
 
 
 class StudyBase(BaseModel):
@@ -33,3 +33,7 @@ class StudyUpdate(BaseModel):
     expire_date: datetime
     owner_id: PydanticObjectId
     status: statusEnum
+
+
+class StudyComment(BaseModel):
+    comment: str

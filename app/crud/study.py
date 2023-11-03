@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app.models import Study, User
+from app.models.study import CommentForm
 
 
 async def create_study_in_db(title, content, owner: User, max_participants: int, expire_time: datetime):
@@ -51,4 +52,10 @@ async def move_waiter_to_participants(study: Study, user: User):
     study.participants_wait.remove(user)
     study.participants.append(user)
     study.cur_participants = len(study.participants)
+    await study.replace()
+
+
+async def add_comment_to_study(study: Study, writer: User, comment: str):
+    comment_obj = CommentForm(writer=writer, content=comment)
+    study.comments.append(comment_obj)
     await study.replace()

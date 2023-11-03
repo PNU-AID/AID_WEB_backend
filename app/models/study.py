@@ -40,7 +40,7 @@ class Study(Document):
     content: str
     participants: List[Link[User]] = Field(unique=True, default=[])
     participants_wait: List[Link[User]] = Field(unique=True, default=[])
-    comments: Optional[List[CommentForm]] = None
+    comments: List[CommentForm] = []
     max_participants: int = Field(gt=1)
     cur_participants: int = 0
     likes: Likes = Likes()

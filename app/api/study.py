@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.security import get_token
 from app.crud.study import (
+    add_comment_to_study,
     create_study_in_db,
     get_likers_from_study,
     get_owner_from_study,
@@ -14,7 +15,7 @@ from app.crud.study import (
 )
 from app.crud.user import read_user_in_db
 from app.schemas.auth import Token
-from app.schemas.study import StudyBase, StudyUpdate
+from app.schemas.study import StudyBase, StudyComment, StudyUpdate
 
 router = APIRouter()
 
@@ -154,3 +155,18 @@ async def get_like(study_id: str, token: Token = Depends(get_token)):
     liker_IDs = await get_likers_from_study(study)
 
     return JSONResponse(content={"like_count": study.likes.likeCount, "is_liked": target_user in liker_IDs})
+
+
+@router.patch("/comment/{study_id}")
+async def add_comment(study_id: str, comment_input: StudyComment, token: Token = Depends(get_token)):
+    study = await get_study_by_id(study_id)
+    if study is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+
+    target_user = await read_user_in_db(token.email)
+    if target_user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
+
+    await add_comment_to_study(study, target_user, comment_input.comment)
+
+    return JSONResponse(content={"status": "success"})
