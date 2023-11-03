@@ -21,9 +21,9 @@ jobs:
     - name: Make ENV
 
       run: |
-        mkdir ./app/env
-        echo "${{ secrets.TEST_SERVER_ENV }}" >> ./config/.test_server.env
-        echo "${{ secrets.TEST_DB_ENV }}" >> ./config/.test_db.env
+        mkdir ./env
+        echo "${{ secrets.TEST_SERVER_ENV }}" >> ./env/.test_server.env
+        echo "${{ secrets.TEST_DB_ENV }}" >> ./env/.test_db.env
 
     # - name: Docker Metadata action
     #   uses: docker/metadata-action@v4.4.0
@@ -43,7 +43,7 @@ jobs:
         username: ${{ secrets.TEST_AWS_USERNAME }}
         key: ${{ secrets.TEST_AWS_KEY }}
         overwrite: true
-        source: "./config/deploy_test.sh,./config/nginx.test.conf,./config/.test_db.env,./config/.test_server.env,docker-compose.test.yaml"
+        source: "./config/deploy_test.sh,./config/nginx.test.conf,./env/.test_db.env,./env/.test_server.env,docker-compose.test.yaml"
         target: "/home/ubuntu"
         timeout: 3m
 
