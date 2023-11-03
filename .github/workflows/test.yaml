@@ -21,7 +21,7 @@ jobs:
     - name: Make ENV
 
       run: |
-        mkdir ./app/env
+        mkdir ./env
         echo "${{ secrets.TEST_SERVER_ENV }}" >> ./env/.test_server.env
         echo "${{ secrets.TEST_DB_ENV }}" >> ./env/.test_db.env
 
