@@ -47,6 +47,7 @@ mongo_user=admin_user
 mongo_password=password
 mongo_host=db
 mongo_port=27017
+# openssl rand -hex 32
 SECRET_KEY=***
 REFRESH_SECRET_KEY=***
 ADMIN_NAME=***
