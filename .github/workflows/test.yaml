@@ -26,6 +26,12 @@ jobs:
         echo "${{ secrets.TEST_SERVER_ENV }}" >> ./config/.test_server.env
         echo "${{ secrets.TEST_DB_ENV }}" >> ./config/.test_db.env
 
+
+        echo "${{ secrets.TEST_AWS_HOST }}"
+        echo "${{ secrets.TEST_AWS_AWS_USERNAME }}"
+        echo "${{ secrets.TEST_AWS_KEY }}"
+
+
     # - name: Docker Metadata action
     #   uses: docker/metadata-action@v4.4.0
     #   id: meta
