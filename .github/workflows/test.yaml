@@ -2,7 +2,7 @@ name: upload_test_server
 
 on:
   pull_request:
-    branches: [ "dev" ] # dev branch에 PR하면 실행
+    branches: [ "test" ] # dev branch에 PR하면 실행
 
 jobs:
   build_and_upload:
