@@ -13,7 +13,7 @@ app = FastAPI(
 
 
 origins = [
-    "http://localhost",
+    "*",
 ]
 
 # ref : https://stackoverflow.com/questions/64139023/how-to-set-cookies-with-fastapi-for-cross-origin-requests
