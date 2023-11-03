@@ -9,7 +9,6 @@ jobs:
 
     runs-on: ubuntu-latest # 우분투 서버에서 실행
 
-    environment: test
     permissions:
       contents: read
       packages: write
