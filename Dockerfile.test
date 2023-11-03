@@ -1,8 +1,14 @@
 FROM python:3.10.9-slim
 
+# .pyc(바이트코드) 생성 x
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# 버퍼 사용 x
+ENV PYTHONUNBUFFERED 1
+
 WORKDIR /app
 
-# COPY ./app .
+COPY ./app .
 
 COPY ./pyproject.toml ./poetry.lock ./
 
