@@ -14,6 +14,11 @@ class CommentForm(BaseModel):
     content: str
 
 
+class Likes(BaseModel):
+    likeCount: int = 0
+    likeID: List[Link[User]] = []
+
+
 class statusEnum(str, Enum):
     """상태를 나타내는 enumerate datatype
 
@@ -38,7 +43,7 @@ class Study(Document):
     comments: Optional[List[CommentForm]] = None
     max_participants: int = Field(gt=1)
     cur_participants: int = 0
-    likes: int = Field(default=0)
+    likes: Likes = Likes()
     url: Optional[HttpUrl] = None
     created_time: datetime = Field(default_factory=datetime.now)
     expire_time: datetime

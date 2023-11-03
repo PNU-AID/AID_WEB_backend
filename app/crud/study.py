@@ -37,6 +37,12 @@ async def get_participants_wait_from_study(study: Study):
     return study.participants_wait
 
 
+async def get_likers_from_study(study: Study):
+    await study.fetch_link(Study.likes.likeID)
+
+    return study.likes.likeID
+
+
 async def is_participants_left(study: Study):
     return study.cur_participants < study.max_participants
 

@@ -10,7 +10,7 @@ class StudyBase(BaseModel):
     title: str
     content: str
     max_participants: int
-    expire_date: datetime
+    expire_time: datetime
 
     model_config = {
         "json_schema_extra": {
@@ -19,7 +19,7 @@ class StudyBase(BaseModel):
                     "title": "test_title",
                     "content": "test_content",
                     "max_participants": 10,
-                    "expire_date": str(datetime.now()),
+                    "expire_time": str(datetime.now()),
                 }
             ]
         }
