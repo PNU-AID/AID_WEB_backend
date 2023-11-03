@@ -38,7 +38,7 @@ services:
       TZ: "Asia/Seoul"
 
     env_file:
-      - ./config/.test_server.env
+      - ./env/.test_server.env
 
     networks:
       - aid
