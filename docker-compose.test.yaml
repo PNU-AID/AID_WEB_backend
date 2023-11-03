@@ -24,19 +24,12 @@ services:
   server:
     container_name: FastapiApp
 
+    image: bshlab671/aid_web_test:latest
+
     depends_on:
       - db
 
     restart: always
-
-    build:
-      context: .
-      dockerfile: Dockerfile
-
-    volumes:
-      - ./app:/app/app
-
-    command: "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
     expose:
       - 8000
@@ -45,7 +38,7 @@ services:
       TZ: "Asia/Seoul"
 
     env_file:
-      - ./env/.server.env
+      - ./config/.test_server.env
 
     networks:
       - aid
@@ -67,7 +60,7 @@ services:
       - 27017
 
     env_file:
-      - ./env/.db.env
+      - ./env/.test_db.env
 
     networks:
       - aid
