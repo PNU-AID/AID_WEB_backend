@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+
+  web-server:
+    container_name: nginx
+
+    image: nginx:latest
+
+    restart: always
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    volumes:
+      - ./config/nginx.test.conf:/etc/nginx/nginx.conf
+
+    ports:
+      - 80:80
+
+    networks:
+      - aid
+
+  server:
+    container_name: FastapiApp
+
+    depends_on:
+      - db
+
+    restart: always
+
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+
+    volumes:
+      - ./app:/app/app
+
+    command: "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+    expose:
+      - 8000
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    env_file:
+      - ./env/.server.env
+
+    networks:
+      - aid
+
+  db:
+    image: mongo:latest
+
+    restart: always
+
+    container_name: db
+
+    volumes:
+      - data-vol:/data/db
+
+    ports:
+      - 30017:27017
+
+    expose:
+      - 27017
+
+    env_file:
+      - ./env/.db.env
+
+    networks:
+      - aid
+
+networks:
+  aid:
+    driver: bridge
+
+volumes:
+  data-vol:
+    driver: local
+    # external: true
