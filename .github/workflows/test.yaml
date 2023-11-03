@@ -27,7 +27,7 @@ jobs:
 
 
         echo "${{ secrets.TEST_AWS_HOST }}"
-        echo "${{ secrets.TEST_AWS_AWS_USERNAME }}"
+        echo "${{ secrets.TEST_AWS_USERNAME }}"
         echo "${{ secrets.TEST_AWS_KEY }}"
 
 
@@ -44,11 +44,10 @@ jobs:
 
     - name: copy file to ec2
       uses: appleboy/scp-action@v0.1.4
-      env:
+      with:
         host: ${{ secrets.TEST_AWS_HOST }}
         username: ${{ secrets.TEST_AWS_USERNAME }}
         key: ${{ secrets.TEST_AWS_KEY }}
-      with:
         overwrite: true
         source: "./config/deploy_test.sh,./config/nginx.test.conf,./config/.test_db.env,./config/.test_server.env,docker-compose.test.yaml"
         target: "/home/ubuntu"
