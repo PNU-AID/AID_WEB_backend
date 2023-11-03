@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+
+  web-server:
+    container_name: nginx
+
+    image: nginx:latest
+
+    restart: always
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    volumes:
+      - ./config/nginx.test.conf:/etc/nginx/nginx.conf
+
+    ports:
+      - 80:80
+
+    networks:
+      - aid
+
+  server:
+    container_name: FastapiApp
+
+    image: bshlab671/aid_web_test:latest
+
+    depends_on:
+      - db
+
+    restart: always
+
+    expose:
+      - 8000
+
+    environment:
+      TZ: "Asia/Seoul"
+
+    env_file:
+      - ./config/.test_server.env
+
+    networks:
+      - aid
+
+  db:
+    image: mongo:latest
+
+    restart: always
+
+    container_name: db
+
+    volumes:
+      - data-vol:/data/db
+
+    ports:
+      - 30017:27017
+
+    expose:
+      - 27017
+
+    env_file:
+      - ./env/.test_db.env
+
+    networks:
+      - aid
+
+networks:
+  aid:
+    driver: bridge
+
+volumes:
+  data-vol:
+    driver: local
+    # external: true

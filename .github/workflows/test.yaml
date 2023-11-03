@@ -1,8 +1,8 @@
-name: build_and_deploy
+name: upload_test_server
 
 on:
   pull_request:
-    branches: [ "main" ] # main branch에 PR하면 실행
+    branches: [ "test" ] # dev branch에 PR하면 실행
 
 jobs:
   build_and_upload:
@@ -22,8 +22,14 @@ jobs:
 
       run: |
         mkdir ./app/env
-        echo "${{ secrets.SERVER_ENV }}" >> ./config/.server.env
-        echo "${{ secrets.DB_ENV }}" >> ./config/.db.env
+        echo "${{ secrets.TEST_SERVER_ENV }}" >> ./config/.test_server.env
+        echo "${{ secrets.TEST_DB_ENV }}" >> ./config/.test_db.env
+
+
+        echo "${{ secrets.TEST_AWS_HOST }}"
+        echo "${{ secrets.TEST_AWS_AWS_USERNAME }}"
+        echo "${{ secrets.TEST_AWS_KEY }}"
+
 
     # - name: Docker Metadata action
     #   uses: docker/metadata-action@v4.4.0
@@ -38,12 +44,13 @@ jobs:
 
     - name: copy file to ec2
       uses: appleboy/scp-action@v0.1.4
+      env:
+        host: ${{ secrets.TEST_AWS_HOST }}
+        username: ${{ secrets.TEST_AWS_USERNAME }}
+        key: ${{ secrets.TEST_AWS_KEY }}
       with:
-        host: ${{ secrets.AWS_HOST }}
-        username: ${{ secrets.AWS_USERNAME }}
-        key: ${{ secrets.AWS_KEY }}
         overwrite: true
-        source: "./config/deploy.sh,./config/nginx.prod.conf,./config/.db.env,./config/.server.env,docker-compose.prod.yaml"
+        source: "./config/deploy_test.sh,./config/nginx.test.conf,./config/.test_db.env,./config/.test_server.env,docker-compose.test.yaml"
         target: "/home/ubuntu"
         timeout: 3m
 
@@ -62,19 +69,19 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
-        file: Dockerfile.prod
+        file: Dockerfile.test
         push: true
-        tags: bshlab671/aid_web:latest
+        tags: bshlab671/aid_web_test:latest
 
     # deploy script
 
     - name: executing remote ssh commands
       uses: appleboy/ssh-action@v0.1.10
       with:
-        host: ${{ secrets.AWS_HOST }}
-        username: ${{ secrets.AWS_USERNAME }}
-        key: ${{ secrets.AWS_KEY }}
+        host: ${{ secrets.TEST_AWS_HOST }}
+        username: ${{ secrets.TEST_AWS_USERNAME }}
+        key: ${{ secrets.TEST_AWS_KEY }}
         timeout: 3m
 
         script: |
-          sh ./config/deploy.sh
+          sh ./config/deploy_test.sh
