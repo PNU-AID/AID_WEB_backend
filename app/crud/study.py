@@ -2,6 +2,7 @@ from datetime import datetime
 
 from app.models import Study, User
 from app.models.study import CommentForm
+from app.schemas.study import StudyUpdate
 
 
 async def create_study_in_db(title, content, owner: User, max_participants: int, expire_time: datetime):
@@ -59,3 +60,19 @@ async def add_comment_to_study(study: Study, writer: User, comment: str):
     comment_obj = CommentForm(writer=writer, content=comment)
     study.comments.append(comment_obj)
     await study.replace()
+
+
+async def update_study_in_db(study_update: StudyUpdate, study: Study):
+    target_user = await User.get(study_update.owner_id)
+    if target_user is None:
+        return None
+
+    study.title = study_update.title
+    study.content = study_update.content
+    study.max_participants = study_update.max_participants
+    study.expire_time = study_update.expire_time
+    study.owner = target_user
+    study.status = study_update.status
+
+    await study.replace()
+    return study

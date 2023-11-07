@@ -12,6 +12,7 @@ from app.crud.study import (
     get_study_paginate,
     is_participants_left,
     move_waiter_to_participants,
+    update_study_in_db,
 )
 from app.crud.user import read_user_in_db
 from app.schemas.auth import Token
@@ -65,15 +66,22 @@ async def delete_study(study_id: str, token: Token = Depends(get_token)):
 
 @router.patch("/update/{study_id}")
 async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)):
-    # TODO
-    # 세부 구현 사항 논의 필요
     study = await get_study_by_id(study_id)
     # study_owner = await get_owner_from_study(study)
-
+    if study is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+    study_owner = await get_owner_from_study(study)
+    if token.email != study_owner.email:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not owner of this study")
     user_email = token.email
-    await read_user_in_db(user_email)
+    user = await read_user_in_db(user_email)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
-    await get_owner_from_study(study)
+    study_updated = await update_study_in_db(study_update, study)
+    if study_updated is None:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Study update failure")
+    return study_updated
 
 
 @router.patch("/join/{study_id}")

@@ -30,7 +30,7 @@ class StudyUpdate(BaseModel):
     title: str
     content: str
     max_participants: int
-    expire_date: datetime
+    expire_time: datetime
     owner_id: PydanticObjectId
     status: statusEnum
 
