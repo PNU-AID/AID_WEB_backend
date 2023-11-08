@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from beanie.odm.operators.update.array import Pull
+
 from app.models import Study, User
 from app.models.study import CommentForm
 from app.schemas.study import StudyUpdate
@@ -76,3 +78,22 @@ async def update_study_in_db(study_update: StudyUpdate, study: Study):
 
     await study.replace()
     return study
+
+
+async def remove_user_from_study(study: Study, user: User):
+    await study.update(Pull({"participants": {"$id": user.id}}))
+    return study
+
+    # Pull({"Study.participants": {"$i 9d": user.id}})
+    # study.cur_participants = len(study.participants)
+    # await study.update_all()
+
+    """
+    db.study.update(
+    { _id: ObjectId("65448e833980d3a535c92a91") },
+    { $pull:
+        { participants:
+            { $id: ObjectId("650ed3282e816d7bde32fe45") }
+        }
+    } )
+    """

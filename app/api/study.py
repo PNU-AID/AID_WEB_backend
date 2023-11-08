@@ -12,6 +12,7 @@ from app.crud.study import (
     get_study_paginate,
     is_participants_left,
     move_waiter_to_participants,
+    remove_user_from_study,
     update_study_in_db,
 )
 from app.crud.user import read_user_in_db
@@ -66,6 +67,7 @@ async def delete_study(study_id: str, token: Token = Depends(get_token)):
 
 @router.patch("/update/{study_id}")
 async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)):
+    # TODO: owner 넘기기는 대상자가 participants에 있을때만 가능하도록 설정
     study = await get_study_by_id(study_id)
     # study_owner = await get_owner_from_study(study)
     if study is None:
@@ -86,6 +88,7 @@ async def update_study(study_id: str, study_update: StudyUpdate, token: Token = 
 
 @router.patch("/join/{study_id}")
 async def join_study(study_id: str, token: Token = Depends(get_token)):
+    # TODO: status가 open인 경우에만 가능하도록 설정
     study = await get_study_by_id(study_id)
     user_email = token.email
     user = await read_user_in_db(user_email)
@@ -177,4 +180,20 @@ async def add_comment(study_id: str, comment_input: StudyComment, token: Token =
 
     await add_comment_to_study(study, target_user, comment_input.comment)
 
+    return JSONResponse(content={"status": "success"})
+
+
+@router.patch("/quit/{study_id}")
+async def quit_study(study_id: str, token: Token = Depends(get_token)):
+    # TODO : 스터디 나가기 실패 구분 필요
+    # TODO : 스터디를 나간 사람이 팀장이라면, 랜덤하게 다른 팀원에게 팀장 권한 부여
+    study = await get_study_by_id(study_id)
+    if study is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+
+    target_user = await read_user_in_db(token.email)
+    if target_user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
+
+    await remove_user_from_study(study, target_user)
     return JSONResponse(content={"status": "success"})
