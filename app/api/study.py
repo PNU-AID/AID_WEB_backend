@@ -16,6 +16,7 @@ from app.crud.study import (
     update_study_in_db,
 )
 from app.crud.user import read_user_in_db
+from app.models.study import Study
 from app.schemas.auth import Token
 from app.schemas.study import StudyBase, StudyComment, StudyUpdate
 
@@ -44,6 +45,15 @@ async def create_study(study_infos: StudyBase, token: Token = Depends(get_token)
 async def get_study_list(page: int = 1, limit: int = 10):
     studies = await get_study_paginate(page, limit)
     return studies
+
+
+@router.get("/list/{study_id}")
+async def get_study_info(study_id: str) -> Study:
+    study = await get_study_by_id(study_id)
+    if study is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+    await study.fetch_all_links()
+    return study
 
 
 @router.delete("/delete/{study_id}")
