@@ -4,7 +4,10 @@ from fastapi.responses import JSONResponse
 from app.core.security import get_token
 from app.crud.study import (
     add_comment_to_study,
+    add_liker_to_study,
+    add_user_to_waitlist,
     create_study_in_db,
+    delete_study_from_db,
     get_likers_from_study,
     get_owner_from_study,
     get_participants_wait_from_study,
@@ -16,39 +19,41 @@ from app.crud.study import (
     update_study_in_db,
 )
 from app.crud.user import read_user_in_db
-from app.models.study import Study
+from app.models.study import Study, StudyStatus
 from app.schemas.auth import Token
-from app.schemas.study import StudyBase, StudyComment, StudyUpdate
+from app.schemas.study import StudyComment, StudyCreate, StudyUpdate
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def create_study(study_infos: StudyBase, token: Token = Depends(get_token)):
+async def create_study(study_infos: StudyCreate, token: Token = Depends(get_token)) -> Study:
+    """스터디 생성
+
+    로그인 한 사람만 생성 가능
+    """
     user_email = token.email
     user = await read_user_in_db(user_email)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
-    study = await create_study_in_db(
-        study_infos.title,
-        study_infos.content,
-        user,
-        max_participants=study_infos.max_participants,
-        expire_time=study_infos.expire_time,
-    )
+    study = await create_study_in_db(study_infos, user)
 
     return study
 
 
+# TODO : status별 조회 기능
+# TODO : created_time순 정렬
 @router.get("/list")
-async def get_study_list(page: int = 1, limit: int = 10):
+async def get_study_list(page: int = 1, limit: int = 10) -> list[Study]:
+    """스터디 목록 조회"""
     studies = await get_study_paginate(page, limit)
     return studies
 
 
 @router.get("/list/{study_id}")
 async def get_study_info(study_id: str) -> Study:
+    """스터디 ID로 정보 조회"""
     study = await get_study_by_id(study_id)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
@@ -58,53 +63,60 @@ async def get_study_info(study_id: str) -> Study:
 
 @router.delete("/delete/{study_id}")
 async def delete_study(study_id: str, token: Token = Depends(get_token)):
-    study = await get_study_by_id(study_id)
-    study_owner = await get_owner_from_study(study)
+    """스터디 삭제
 
+    스터디를 DB에서 완전히 제거
+    owner만 삭제 가능"""
     user_email = token.email
     user = await read_user_in_db(user_email)
-
+    study = await get_study_by_id(study_id)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
-    if user_email != study_owner.email:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not owner of this study")
 
-    await study.delete()
+    study_owner = await get_owner_from_study(study)
+    if user_email != study_owner.email:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="You are not owner of this study")
+
+    await delete_study_from_db(study)
     return JSONResponse(content={"status": "success"})
 
 
 @router.patch("/update/{study_id}")
-async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)):
-    # TODO: owner 넘기기는 대상자가 participants에 있을때만 가능하도록 설정
+async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)) -> StudyUpdate:
+    """스터디 정보 업데이트"""
     study = await get_study_by_id(study_id)
-    # study_owner = await get_owner_from_study(study)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-    study_owner = await get_owner_from_study(study)
-    if token.email != study_owner.email:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not owner of this study")
+
     user_email = token.email
     user = await read_user_in_db(user_email)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
+    study_owner = await get_owner_from_study(study)
+    if user_email != study_owner.email:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not owner of this study")
+
     study_updated = await update_study_in_db(study_update, study)
-    if study_updated is None:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Study update failure")
+    if isinstance(study_updated, str):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Study update failure: {study_updated}")
+
     return study_updated
 
 
 @router.patch("/join/{study_id}")
 async def join_study(study_id: str, token: Token = Depends(get_token)):
-    # TODO: status가 open인 경우에만 가능하도록 설정
-    study = await get_study_by_id(study_id)
+    """스터디 참여 신청"""
     user_email = token.email
     user = await read_user_in_db(user_email)
-
+    study = await get_study_by_id(study_id)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+    if study.status != StudyStatus.open:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Study is not open")
+
     await study.fetch_all_links()
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
@@ -113,25 +125,26 @@ async def join_study(study_id: str, token: Token = Depends(get_token)):
     if user in study.participants_wait:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User already waiting to join this study")
 
-    study.participants_wait.append(user)
-    await study.replace()
+    await add_user_to_waitlist(study, user)
     return JSONResponse(content={"status": "success"})
 
 
 @router.patch("/approve/{study_id}")
 async def approve_waiting_user(study_id: str, user_email: str, token: Token = Depends(get_token)):
+    """스터디 참여 신청 승인
+
+    owner만 가능"""
     study = await get_study_by_id(study_id)
     target_user = await read_user_in_db(user_email)
-    print(target_user.id)
-
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-    study_owner = await get_owner_from_study(study)
-    participants_wait = await get_participants_wait_from_study(study)
     if target_user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
+
+    study_owner = await get_owner_from_study(study)
+    participants_wait = await get_participants_wait_from_study(study)
     if not await is_participants_left(study):
-        raise HTTPException(status_code=400, detail="No more participants can join this study")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No more participants can join this study")
     if token.email != study_owner.email:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not owner of this study")
     if target_user not in participants_wait:
@@ -143,33 +156,31 @@ async def approve_waiting_user(study_id: str, user_email: str, token: Token = De
 
 @router.patch("/like/{study_id}")
 async def add_like(study_id: str, token: Token = Depends(get_token)):
+    """스터디 좋아요"""
     study = await get_study_by_id(study_id)
+    target_user = await read_user_in_db(token.email)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-
-    target_user = await read_user_in_db(token.email)
-    liker_IDs = await get_likers_from_study(study)
-
     if target_user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
+    liker_IDs = await get_likers_from_study(study)
     if target_user in liker_IDs:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Already liked this post")
 
-    study.likes.likeID.append(target_user)
-    study.likes.likeCount = len(liker_IDs)
-    await study.replace()
+    await add_liker_to_study(study, target_user)
 
     return JSONResponse(content={"status": "success"})
 
 
 @router.get("/like/{study_id}")
 async def get_like(study_id: str, token: Token = Depends(get_token)):
+    """스터디 좋아요 개수, 사용자가 좋아요 눌렀는지 여부 조회"""
     study = await get_study_by_id(study_id)
+    target_user = await read_user_in_db(token.email)
+
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-
-    target_user = await read_user_in_db(token.email)
     if target_user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
@@ -180,11 +191,12 @@ async def get_like(study_id: str, token: Token = Depends(get_token)):
 
 @router.patch("/comment/{study_id}")
 async def add_comment(study_id: str, comment_input: StudyComment, token: Token = Depends(get_token)):
+    """댓글 추가"""
     study = await get_study_by_id(study_id)
+    target_user = await read_user_in_db(token.email)
+
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-
-    target_user = await read_user_in_db(token.email)
     if target_user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
@@ -195,15 +207,18 @@ async def add_comment(study_id: str, comment_input: StudyComment, token: Token =
 
 @router.patch("/quit/{study_id}")
 async def quit_study(study_id: str, token: Token = Depends(get_token)):
-    # TODO : 스터디 나가기 실패 구분 필요
-    # TODO : 스터디를 나간 사람이 팀장이라면, 랜덤하게 다른 팀원에게 팀장 권한 부여
+    """스터디 나가기"""
     study = await get_study_by_id(study_id)
+    target_user = await read_user_in_db(token.email)
+
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
-
-    target_user = await read_user_in_db(token.email)
     if target_user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
-    await remove_user_from_study(study, target_user)
-    return JSONResponse(content={"status": "success"})
+    await study.fetch_link(Study.participants)
+    if target_user not in study.participants:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not in this study")
+
+    study = await remove_user_from_study(study, target_user)
+    return study

@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List, Optional
 
 from beanie import Document, Link
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field
 from pydantic.functional_validators import model_validator
 
 from .user import User
@@ -19,12 +19,12 @@ class Likes(BaseModel):
     likeID: List[Link[User]] = []
 
 
-class statusEnum(str, Enum):
+class StudyStatus(str, Enum):
     """상태를 나타내는 enumerate datatype
 
     closed: 스터디가 종료됨
     open: 스터디 모집중
-    canceled: 인원 부족, 팀장에 의한 취소 등으로 스터디가 종료됨
+    canceled: 인원 부족(시간 초과), 팀장에 의한 취소 등으로 스터디가 종료됨
     """
 
     closed = "closed"
@@ -35,6 +35,8 @@ class statusEnum(str, Enum):
 class Study(Document):
     """User DB representation"""
 
+    # TODO : replace() override후 cur_participants 업데이트하기
+
     owner: Link[User]
     title: str
     content: str
@@ -44,10 +46,10 @@ class Study(Document):
     max_participants: int = Field(gt=1)
     cur_participants: int = 0
     likes: Likes = Likes()
-    url: Optional[HttpUrl] = None
+    url: Optional[str] = None
     created_time: datetime = Field(default_factory=datetime.now)
     expire_time: datetime
-    status: statusEnum = statusEnum.open
+    status: StudyStatus = StudyStatus.open
 
     @model_validator(mode="after")
     def check_expire_gt_than_created(self) -> "Study":
