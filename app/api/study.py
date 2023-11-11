@@ -54,7 +54,10 @@ async def create_study(study_infos: StudyCreate, token: Token = Depends(get_toke
 # TODO : created_time순 정렬
 @router.get("/list", response_model=List[StudyOutputSimple])
 async def get_study_list(page: int = 1, limit: int = 10):
-    """스터디 목록 조회"""
+    """스터디 목록 조회
+
+    page로 스터디 목록 페이지 설정
+    limit로 페이지 별 스터디 개수 설정"""
     studies = await get_study_paginate(page, limit)
     return studies
 
@@ -92,8 +95,8 @@ async def delete_study(study_id: str, token: Token = Depends(get_token)):
     return JSONResponse(content={"status": "success"})
 
 
-@router.patch("/update/{study_id}")
-async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)) -> StudyUpdate:
+@router.patch("/update/{study_id}", response_model=StudyOutput)
+async def update_study(study_id: str, study_update: StudyUpdate, token: Token = Depends(get_token)):
     """스터디 정보 업데이트"""
     study = await get_study_by_id(study_id)
     if study is None:
@@ -112,6 +115,7 @@ async def update_study(study_id: str, study_update: StudyUpdate, token: Token = 
     if isinstance(study_updated, str):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Study update failure: {study_updated}")
 
+    study_updated.fetch_all_links()
     return study_updated
 
 
