@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 
@@ -21,7 +23,13 @@ from app.crud.study import (
 from app.crud.user import read_user_in_db
 from app.models.study import Study, StudyStatus
 from app.schemas.auth import Token
-from app.schemas.study import StudyComment, StudyCreate, StudyUpdate
+from app.schemas.study import (
+    StudyComment,
+    StudyCreate,
+    StudyOutput,
+    StudyOutputSimple,
+    StudyUpdate,
+)
 
 router = APIRouter()
 
@@ -44,19 +52,20 @@ async def create_study(study_infos: StudyCreate, token: Token = Depends(get_toke
 
 # TODO : status별 조회 기능
 # TODO : created_time순 정렬
-@router.get("/list")
-async def get_study_list(page: int = 1, limit: int = 10) -> list[Study]:
+@router.get("/list", response_model=List[StudyOutputSimple])
+async def get_study_list(page: int = 1, limit: int = 10):
     """스터디 목록 조회"""
     studies = await get_study_paginate(page, limit)
     return studies
 
 
-@router.get("/list/{study_id}")
+@router.get("/list/{study_id}", response_model=StudyOutput)
 async def get_study_info(study_id: str) -> Study:
     """스터디 ID로 정보 조회"""
     study = await get_study_by_id(study_id)
     if study is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Could not find study with given id")
+
     await study.fetch_all_links()
     return study
 
@@ -205,7 +214,7 @@ async def add_comment(study_id: str, comment_input: StudyComment, token: Token =
     return JSONResponse(content={"status": "success"})
 
 
-@router.patch("/quit/{study_id}")
+@router.patch("/quit/{study_id}", response_model=StudyOutput)
 async def quit_study(study_id: str, token: Token = Depends(get_token)):
     """스터디 나가기"""
     study = await get_study_by_id(study_id)
