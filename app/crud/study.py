@@ -103,7 +103,7 @@ async def update_study_in_db(study_update: StudyUpdate, study: Study) -> Study |
         return "Can't update max_participants to lower than current participants."
     if study_update.expire_time < datetime.now(tz):
         return "Can't update expire_time to lower than current time."
-    if study.expire_time < datetime.now(tz) and study_update.status == "open":
+    if study.expire_time < datetime.now(tz) and study_update.status == "open":  # Not tested
         return "Can't open expired study."
     if target_user not in study.participants:
         return "Can't update owner to non-participant."

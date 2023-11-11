@@ -156,12 +156,12 @@ async def approve_waiting_user(study_id: str, user_email: str, token: Token = De
 
     study_owner = await get_owner_from_study(study)
     participants_wait = await get_participants_wait_from_study(study)
-    if not await is_participants_left(study):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No more participants can join this study")
     if token.email != study_owner.email:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not owner of this study")
     if target_user not in participants_wait:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is not waiting to join this study")
+    if not await is_participants_left(study):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No more participants can join this study")
 
     await move_waiter_to_participants(study, target_user)
     return JSONResponse(content={"status": "success"})
@@ -221,6 +221,7 @@ async def add_comment(study_id: str, comment_input: StudyComment, token: Token =
 @router.patch("/quit/{study_id}", response_model=StudyOutput)
 async def quit_study(study_id: str, token: Token = Depends(get_token)):
     """스터디 나가기"""
+    # TODO : 1명 남을때 나가기 방지 / 스터디 자동 삭제
     study = await get_study_by_id(study_id)
     target_user = await read_user_in_db(token.email)
 
