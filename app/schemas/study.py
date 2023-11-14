@@ -9,6 +9,29 @@ from app.models.user import User
 from app.schemas.user import UserOut
 
 
+# 스터디 출력용 field
+class StudyCommentOut(BaseModel):
+    """스터디 댓글(작성자, 내용)"""
+
+    writer: UserOut
+    content: str
+
+
+class LikesOut(BaseModel):
+    """스터디 좋아요 정보(좋아요 수만 출력)"""
+
+    likeCount: int
+
+
+class StudyUserOutput(BaseModel):
+    """스터디 관련 User 출력(id, email, nick_name)"""
+
+    id: PydanticObjectId
+    email: str
+    nick_name: str
+
+
+# 스터디 입,출력 schema
 class StudyCreate(BaseModel):
     title: str
     content: str
@@ -46,13 +69,6 @@ class StudyComment(BaseModel):
 
 
 class StudyOutputSimple(BaseModel):
-    class StudyCommentOut(BaseModel):
-        writer: UserOut
-        content: str
-
-    class LikesOut(BaseModel):
-        likeCount: int
-
     id: PydanticObjectId
     owner: Link[User]
     title: str
@@ -68,11 +84,6 @@ class StudyOutputSimple(BaseModel):
 
 
 class StudyOutput(StudyOutputSimple):
-    class StudyUserOutput(BaseModel):
-        id: PydanticObjectId
-        email: str
-        nick_name: str
-
     owner: StudyUserOutput
     participants: List[StudyUserOutput]
     participants_wait: List[StudyUserOutput]
