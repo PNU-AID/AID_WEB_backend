@@ -15,8 +15,8 @@ class CommentForm(BaseModel):
 
 
 class Likes(BaseModel):
-    likeCount: int = 0
-    likeID: List[Link[User]] = []
+    like_count: int = 0
+    like_ID: List[Link[User]] = []
 
 
 class StudyStatus(str, Enum):
